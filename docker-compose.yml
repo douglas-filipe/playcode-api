@@ -2,10 +2,10 @@ version: "3.9"
 
 services:
   db:
-    container_name: db
+    container_name: db_playcode
     image: postgres
     ports:
-      - 5432:3432
+      - 5432:5432
     environment:
       - POSTGRES_USER=admin
       - POSTGRES_PASSWORD=1234
