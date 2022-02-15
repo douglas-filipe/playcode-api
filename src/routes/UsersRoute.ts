@@ -1,12 +1,13 @@
 import { Router, Express } from "express";
 import { UsersControllers } from "../controllers";
-import { CreateUser } from "../controllers/UsersControllers";
+import { validation } from "../middlewares";
+import { createUserModel } from "../models";
 const usersControllers = new UsersControllers();
 
 const router = Router();
 
 const usersRoute = (app: Express) => {
-  router.post("", usersControllers.CreateUser);
+  router.post("/", validation(createUserModel), usersControllers.CreateUser);
   app.use("/users", router);
 };
 
