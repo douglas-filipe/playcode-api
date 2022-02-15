@@ -6,7 +6,7 @@ import {
   BeforeInsert,
   BeforeUpdate,
 } from "typeorm";
-import bcrypt from "bcrypt";
+import bcryptjs from "bcryptjs";
 import { v4 as uuid } from "uuid";
 
 @Entity("users")
@@ -36,7 +36,7 @@ export default class User {
 
   @BeforeInsert()
   hashPassword() {
-    this.password = bcrypt.hashSync(this.password, 10);
+    this.password = bcryptjs.hashSync(this.password, 10);
   }
 
   constructor() {

@@ -1,11 +1,13 @@
-import { Router } from "express";
+import { Router, Express } from "express";
 import { UsersControllers } from "../controllers";
+import { CreateUser } from "../controllers/UsersControllers";
 const usersControllers = new UsersControllers();
 
 const router = Router();
 
-router.post("/users", (req, res) => {
-  usersControllers.CreateUser(req, res);
-});
+const usersRoute = (app: Express) => {
+  router.post("", usersControllers.CreateUser);
+  app.use("/users", router);
+};
 
-export default router;
+export default usersRoute;
