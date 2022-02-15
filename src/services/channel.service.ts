@@ -21,4 +21,17 @@ export default class ChannelService {
 
     return channel;
   }
+
+  async update(id: number, channel: Channel) {
+    await this.channelRepository.update(id, channel);
+    const updated = await this.channelRepository.findOne({ id });
+
+    return updated;
+  }
+
+  async delete(id: number) {
+    await this.channelRepository.delete({ id });
+
+    return "channel has been deleted";
+  }
 }
