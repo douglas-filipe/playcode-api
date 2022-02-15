@@ -1,19 +1,14 @@
 import { getCustomRepository } from "typeorm";
 import { UsersRepositories } from "../repositories";
-
-interface IRequestBody {
-  name: string;
-  email: string;
-  password: string;
-}
+import { IRequestBody } from "../types";
 
 export class UsersServices {
-  usersRepository = getCustomRepository(UsersRepositories);
   async CreateUser(body: IRequestBody) {
-    const user = this.usersRepository.create({
+    const usersRepository = getCustomRepository(UsersRepositories);
+    const user = usersRepository.create({
       ...body,
     });
-    await this.usersRepository.save(user);
+    await usersRepository.save(user);
     const { password, ...others } = user;
     return others;
   }
