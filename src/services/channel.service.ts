@@ -1,4 +1,4 @@
-import { getCustomRepository } from "typeorm";
+import { FindOneOptions, getCustomRepository } from "typeorm";
 import { Channel } from "../entities";
 import { ChannelRepository } from "../repositories";
 
@@ -14,5 +14,11 @@ export default class ChannelService {
     await this.channelRepository.save(createdChannel);
 
     return createdChannel;
+  }
+
+  async byId(id: number, options?: FindOneOptions<Channel>) {
+    const channel = await this.channelRepository.findOne({ id }, options);
+
+    return channel;
   }
 }
