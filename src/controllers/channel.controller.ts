@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { ChannelService } from "../services";
+import { ResponseError } from "../errors";
 
 export default class ChannelController {
   static async create(req: Request, res: Response) {
