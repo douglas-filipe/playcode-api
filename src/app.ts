@@ -1,7 +1,7 @@
 import express from "express";
 import { logger } from "./middlewares";
 import { channelRouter, watchRoute } from "./routes";
-import usersRoute from "./routes/UsersRoute";
+import usersRoute from "./routes/users.routes";
 import videoRoute from "./routes/VideoRoutes";
 
 // import swaggerUiExpress from "swagger-ui-express";

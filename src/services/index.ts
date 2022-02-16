@@ -1,4 +1,4 @@
-import { UsersServices } from "./UsersServices";
+import { UsersServices } from "./users.service";
 import { ChannelService } from "./channel.service";
 import { VideoServices } from "./VideoServices";
 
