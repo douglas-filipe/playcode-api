@@ -1,14 +1,18 @@
 import { Router, Express } from "express";
 import { UsersControllers } from "../controllers";
 import { validation } from "../middlewares";
-import { createUserModel } from "../models";
-const usersControllers = new UsersControllers();
+import { createUserModel, loginUserModel } from "../models";
 
 const router = Router();
 
 const usersRoute = (app: Express) => {
-  router.post("/", validation(createUserModel), usersControllers.CreateUser);
-  app.use("/users", router);
+  router.post(
+    "/users",
+    validation(createUserModel),
+    UsersControllers.CreateUser
+  );
+  router.post("/login", validation(loginUserModel), UsersControllers.LoginUser);
+  app.use("/", router);
 };
 
 export default usersRoute;

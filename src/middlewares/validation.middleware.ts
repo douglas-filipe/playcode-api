@@ -1,9 +1,13 @@
 import { Request, Response, NextFunction } from "express";
 import { SchemaOf } from "yup";
-import { ICreateUsers, IerrorsYup } from "../types/validationTypes";
+import {
+  ICreateUsers,
+  IerrorsYup,
+  ILoginUsers,
+} from "../types/validationTypes";
 
 export const validation =
-  (schema: SchemaOf<ICreateUsers>) =>
+  (schema: SchemaOf<ICreateUsers | ILoginUsers>) =>
   async (req: Request, res: Response, next: NextFunction) => {
     const resource = req.body;
     try {
