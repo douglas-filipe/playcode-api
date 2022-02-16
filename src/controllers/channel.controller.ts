@@ -1,12 +1,18 @@
 import { Request, Response } from "express";
 import { ChannelService } from "../services";
 import { ResponseError } from "../errors";
+import { uploadVideo } from "../utils/UploadVideoData";
 
 export default class ChannelController {
   static async create(req: Request, res: Response) {
     try {
-      const channel = req.body;
       // const { userId } = req;
+      const channel = req.body;
+      const channelFile = req.file;
+      const file = await uploadVideo(channelFile?.buffer, channelFile);
+
+      channel.avatarUrl = file.Location;
+      channel.avatarKey = file.Key;
 
       const channelService = new ChannelService();
       const newChannel = await channelService.add(channel);
