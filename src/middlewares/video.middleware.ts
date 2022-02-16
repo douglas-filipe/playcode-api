@@ -1,13 +1,9 @@
 import { Request, Response, NextFunction } from "express";
 import { SchemaOf } from "yup";
-import {
-  ICreateUsers,
-  IerrorsYup,
-  ILoginUsers,
-} from "../types/validationTypes";
+import { ErrorsYup, IVideos } from "../types/IVideo";
 
-export const validation =
-  (schema: SchemaOf<ICreateUsers | ILoginUsers>) =>
+export const videoValidation =
+  (schema: SchemaOf<IVideos>) =>
   async (req: Request, res: Response, next: NextFunction) => {
     const resource = req.body;
     try {
@@ -17,6 +13,6 @@ export const validation =
       });
       next();
     } catch (e) {
-      res.status(400).json({ error: (e as IerrorsYup).errors.join(", ") });
+      res.status(400).json({ error: (e as ErrorsYup).errors.join(", ") });
     }
   };

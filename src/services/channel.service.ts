@@ -2,7 +2,7 @@ import { FindOneOptions, getCustomRepository } from "typeorm";
 import { Channel } from "../entities";
 import { ChannelRepository } from "../repositories";
 
-export default class ChannelService {
+export class ChannelService {
   channelRepository: ChannelRepository;
 
   constructor() {

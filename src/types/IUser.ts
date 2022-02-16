@@ -3,3 +3,9 @@ export interface IRequestBody {
   email: string;
   password: string;
 }
+
+
+export interface ILoginUser {
+  email: string,
+  password: string
+}

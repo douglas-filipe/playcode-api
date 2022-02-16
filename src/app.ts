@@ -2,6 +2,7 @@ import express from "express";
 import { logger } from "./middlewares";
 import { channelRouter } from "./routes";
 import usersRoute from "./routes/UsersRoute";
+import videoRoute from "./routes/VideoRoutes";
 
 // import swaggerUiExpress from "swagger-ui-express";
 // import swaggerDocument from "./swagger.json";
@@ -17,5 +18,6 @@ app.use(logger);
 //routers
 usersRoute(app);
 channelRouter(app);
+videoRoute(app);
 
 export default app;

@@ -1,4 +1,5 @@
-import ChannelService from "./channel.service";
-import UsersServices from "./UsersServices";
+import { UsersServices } from "./UsersServices";
+import { ChannelService } from "./channel.service";
+import { VideoServices } from "./VideoServices";
 
-export { UsersServices, ChannelService };
+export { UsersServices, ChannelService, VideoServices };
