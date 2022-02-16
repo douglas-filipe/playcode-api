@@ -1,9 +1,3 @@
-import { 
-    createUserModel,
-    loginUserModel
- } from "./userModel.validation";
+import { createUserModel, loginUserModel } from "./userModel.validation";
 
-export { 
-    createUserModel,
-    loginUserModel
-};
+export { createUserModel, loginUserModel };

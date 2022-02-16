@@ -8,7 +8,7 @@ import {
   JoinTable,
 } from "typeorm";
 import { User } from ".";
-// import { Videos } from ".";
+import { Video } from ".";
 import { v4 as uuidv4 } from "uuid";
 
 @Entity("comments")
@@ -23,11 +23,10 @@ class Comments {
   @JoinTable({ name: "user_id" })
   user!: User;
 
-  /* 
-  @ManyToMany(() => Videos)
-    @JoinColumn({name: "video_id"})
-    video!: Videos;
-  */
+  @ManyToMany(() => Video)
+  @JoinColumn({ name: "video_id" })
+  video!: Video;
+
   constructor() {
     if (!this.id) {
       this.id = uuidv4();

@@ -1,2 +1,5 @@
+import channelRouter from "./channel.routes";
 import UsersRoute from "./UsersRoute";
-export { UsersRoute };
+import videosRoute from "./VideoRoutes";
+
+export { UsersRoute, channelRouter, videosRoute };
