@@ -6,6 +6,7 @@ import {
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { v4 as uuidv4 } from "uuid";
+import { User } from ".";
 
 @Entity()
 export default class Channel {
@@ -21,9 +22,9 @@ export default class Channel {
   @Column()
   avatarKey!: string;
 
-  // @OneToOne((type) => Users)
-  // @JoinColumn()
-  // user!: Users;
+  @OneToOne((type) => User)
+  @JoinColumn()
+  user!: User;
 
   constructor() {
     if (!this.id) {
