@@ -2,11 +2,12 @@ import {
   Column,
   Entity,
   JoinColumn,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { v4 as uuidv4 } from "uuid";
-import { User } from ".";
+import { User, Video } from ".";
 
 @Entity()
 export default class Channel {
@@ -25,6 +26,9 @@ export default class Channel {
   @OneToOne((type) => User)
   @JoinColumn()
   user!: User;
+
+  @OneToMany((type) => Video, (video) => video.channel)
+  videos!: Video[];
 
   constructor() {
     if (!this.id) {
