@@ -1,3 +1,7 @@
-import { createUserModel } from "./userModel.validation";
+import { 
+    createUserModel,
+ } from "./userModel.validation";
 
-export { createUserModel };
+export { 
+    createUserModel,
+};
