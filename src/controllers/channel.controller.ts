@@ -31,18 +31,17 @@ export default class ChannelController {
       const channelService = new ChannelService();
       const channel = await channelService.byId(id);
 
-      if (!channel) {
-        throw new ResponseError("Channel not found.", 400);
-      }
+      // if (!channel) {
+      //   throw new ResponseError("Channel not found.", 400);
+      // }
 
       return res.json(channel);
     } catch (e: any) {
-      if (e.message === "Channel not found.") {
-        return res.status(e.statusCode).json({ message: e.message });
-      }
-
-      const message = e.message;
-      return res.status(400).json({ message });
+      // if (e.message === "Channel not found.") {
+      //   return res.status(e.statusCode).json({ message: e.message });
+      // }
+      //const message = e.message;
+      return res.status(e.statusCode).json({ message: e.message });
     }
   }
 

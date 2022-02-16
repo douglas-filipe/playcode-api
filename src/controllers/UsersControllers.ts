@@ -15,7 +15,10 @@ export class UsersControllers {
     try {
       const token = await userService.Authenticate(req.body);
       return res.json({ token: token });
-    } catch (e: ResponseError | any) {
+    } catch (e: any) {
+      if(!e.statusCode){
+        console.log(e)
+      }
       return res.status(e.statusCode).json({ message: e.message });
     }
   }
