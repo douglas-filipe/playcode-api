@@ -1,2 +1,3 @@
 import { UsersServices } from "./UsersServices";
-export { UsersServices };
+import { VideoServices } from "./VideoServices";
+export { UsersServices, VideoServices };
