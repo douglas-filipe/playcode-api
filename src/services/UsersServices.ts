@@ -28,7 +28,6 @@ export class UsersServices {
 
     if (user === undefined || !bcrypt.compareSync(password, user.password)) {
       throw new ResponseError("invalid credentials", 401);
-      return;
     } else {
       const token = jwt.sign({ uuid: user.id }, process.env.SECRET as string, {
         expiresIn: "1d",
@@ -36,4 +35,5 @@ export class UsersServices {
       return token;
     }
   }
+
 }
