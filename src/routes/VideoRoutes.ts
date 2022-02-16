@@ -17,7 +17,6 @@ const videosRoute = (app: Express) => {
     videoValidation(createVideoModel),
     Resolver(videoControllers.CreateVideo)
   );
-  router.get("/:id", Resolver(videoControllers.FindOneById));
   app.use("/videos", router);
 };
 
