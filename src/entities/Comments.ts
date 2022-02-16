@@ -5,6 +5,7 @@ import {
   ManyToOne,
   ManyToMany,
   JoinColumn,
+  JoinTable,
 } from "typeorm";
 import { User } from ".";
 // import { Videos } from ".";
@@ -19,13 +20,13 @@ class Comments {
   description!: string;
 
   @ManyToOne(() => User)
-  @JoinColumn({ name: "user_id" })
+  @JoinTable({ name: "user_id" })
   user!: User;
 
   /* 
   @ManyToMany(() => Videos)
     @JoinColumn({name: "video_id"})
-    video!: Videos[];
+    video!: Videos;
   */
   constructor() {
     if (!this.id) {
