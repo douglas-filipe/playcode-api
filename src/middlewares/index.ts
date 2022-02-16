@@ -1,4 +1,5 @@
 import { logger } from "./log.middleware";
-import { validation } from "./validation.middleware";
+import { validation, validationUser } from "./validation.middleware";
+import { verifyToken } from "./verify.token.middleware";
 
-export { logger, validation };
+export { logger, validation, verifyToken, validationUser };
