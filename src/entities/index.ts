@@ -1,3 +1,4 @@
 import User from "./User";
+import Video from "./Videos";
 
-export { User };
+export { User, Video };

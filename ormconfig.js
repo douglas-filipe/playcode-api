@@ -1,3 +1,7 @@
+const dotenv = require("dotenv");
+
+dotenv.config();
+
 const config = {
   name: "default",
   type: "postgres",
@@ -35,7 +39,7 @@ const developmentEnv = {
   host: process.env.HOST,
   port: process.env.PORT_POSTGRES,
   database: process.env.DATABASE,
-  username: process.env.USERNAME,
+  username: process.env.USER_NAME,
   password: process.env.PASSWORD,
   entities: ["./src/entities/**/*.ts"],
   migrations: ["./src/migrations/*.ts"],
