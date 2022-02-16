@@ -1,2 +1,4 @@
 import { UsersRepositories } from "./UsersRepository";
-export { UsersRepositories };
+import { VideoRepositories } from "./VideoRepository";
+
+export { UsersRepositories, VideoRepositories };

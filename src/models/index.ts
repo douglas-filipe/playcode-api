@@ -1,3 +1,4 @@
 import { createUserModel } from "./userModel.validation";
+import { createVideoModel } from "./videoModel.validation";
 
-export { createUserModel };
+export { createUserModel, createVideoModel };
