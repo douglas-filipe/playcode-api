@@ -1,3 +1,4 @@
 import ChannelController from "./channel.controller";
+import UsersControllers from "./UsersControllers";
 
-export { ChannelController };
+export { UsersControllers, ChannelController };

@@ -1,3 +1,5 @@
 import ChannelRepository from "./channel.repository";
+import UsersRepositories from "./UsersRepository";
+import CommentsRepository from "./CommentsRepository";
 
-export { ChannelRepository };
+export { UsersRepositories, ChannelRepository, CommentsRepository };

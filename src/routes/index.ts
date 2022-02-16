@@ -1,3 +1,4 @@
 import channelRouter from "./channel.routes";
+import UsersRoute from "./UsersRoute";
 
-export { channelRouter };
+export { UsersRoute, channelRouter };

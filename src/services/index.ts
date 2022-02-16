@@ -1,3 +1,4 @@
 import ChannelService from "./channel.service";
+import UsersServices from "./UsersServices";
 
-export { ChannelService };
+export { UsersServices, ChannelService };

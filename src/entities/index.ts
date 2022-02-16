@@ -1,3 +1,5 @@
+import User from "./User";
 import Channel from "./channel.entity";
+import Comments from "./Comments";
 
-export { Channel };
+export { User, Channel, Comments };
