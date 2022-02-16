@@ -3,6 +3,7 @@ import { VideoControllers } from "../controllers/VideoController";
 import { videoValidation } from "../middlewares/video.middleware";
 import { createVideoModel } from "../models/videoModel.validation";
 import multer from "multer";
+import { Resolver } from "../middlewares/Error.resolver";
 
 const videoControllers = new VideoControllers();
 const multerConfig = require("../configs/multer");
@@ -14,8 +15,9 @@ const videosRoute = (app: Express) => {
     "/",
     multer(multerConfig).any(),
     videoValidation(createVideoModel),
-    videoControllers.CreateVideo
+    Resolver(videoControllers.CreateVideo)
   );
+  router.get("/:id", Resolver(videoControllers.FindOneById));
   app.use("/videos", router);
 };
 

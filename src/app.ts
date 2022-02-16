@@ -1,6 +1,6 @@
 import express from "express";
 import { logger } from "./middlewares";
-import { channelRouter } from "./routes";
+import { channelRouter, watchRoute } from "./routes";
 import usersRoute from "./routes/UsersRoute";
 import videoRoute from "./routes/VideoRoutes";
 
@@ -19,5 +19,6 @@ app.use(logger);
 usersRoute(app);
 channelRouter(app);
 videoRoute(app);
+watchRoute(app);
 
 export default app;
