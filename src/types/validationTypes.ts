@@ -4,6 +4,12 @@ export interface ICreateUsers {
   password: string;
 }
 
+export interface ILoginUsers {
+  email: string;
+  password: string;
+}
+
+
 export interface IerrorsYup {
   errors: [string];
 }

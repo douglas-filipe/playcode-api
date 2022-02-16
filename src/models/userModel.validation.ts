@@ -5,3 +5,9 @@ export const createUserModel = yup.object().shape({
   email: yup.string().email().strict().required(),
   password: yup.string().strict().required(),
 });
+
+
+export const loginUserModel = yup.object().shape({
+  email: yup.string().email().strict().required(),
+  password: yup.string().strict().required(),
+})
