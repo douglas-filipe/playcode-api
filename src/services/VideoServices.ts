@@ -5,13 +5,18 @@ import { IVideos } from "../types/IVideo";
 import { uploadVideo } from "../utils/UploadVideoData";
 
 export class VideoServices {
+  videoRepository: VideoRepositories;
+
+  constructor() {
+    this.videoRepository = getCustomRepository(VideoRepositories);
+  }
   async AddVideo(body: IVideos, img: any) {
-    const videoRepository = getCustomRepository(VideoRepositories);
+    //FIXME error treatement when user post video and imgs
 
     const file = await uploadVideo(img[0].buffer, img[0]);
     const videoFiles = await uploadVideo(img[1].buffer, img[1]);
 
-    const video = videoRepository.create({
+    const video = this.videoRepository.create({
       name: body.name,
       description: body.description,
       videourl: videoFiles.Location,
@@ -20,7 +25,21 @@ export class VideoServices {
       thumburl: file.Location,
       tumbkey: file.Key,
     });
-    await videoRepository.save(video);
+    await this.videoRepository.save(video);
     return video;
+  }
+
+  async WatchVideo(id: any) {
+    const video = this.videoRepository.findOne(id);
+
+    let CurViews;
+    await video.then((response) => (CurViews = response?.views));
+    console.log(CurViews);
+    await this.videoRepository.update(id, {
+      views: Number(CurViews) + 1,
+    });
+    const watch = this.videoRepository.findOne(id);
+
+    return watch;
   }
 }
