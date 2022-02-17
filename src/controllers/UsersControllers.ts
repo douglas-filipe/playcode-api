@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import { ResponseError } from "../errors";
 import { UsersServices } from "../services";
 
 export class UsersControllers {
@@ -16,10 +15,14 @@ export class UsersControllers {
       const token = await userService.Authenticate(req.body);
       return res.json({ token: token });
     } catch (e: any) {
-      if(!e.statusCode){
-        console.log(e)
-      }
       return res.status(e.statusCode).json({ message: e.message });
     }
+  }
+
+  static async GetUser (req: Request, res: Response): Promise<Response> {
+    const { idUser } = req
+    const usersServices = new UsersServices();
+    const user = await usersServices.ById(idUser)
+    return res.json(user)
   }
 }

@@ -32,7 +32,23 @@ export class UsersServices {
       const token = jwt.sign({ uuid: user.id }, process.env.SECRET as string, {
         expiresIn: "1d",
       });
+      
       return token;
+    }
+  }
+
+  async ById(uuid: string | undefined){
+
+    const userRepository = getCustomRepository(UsersRepositories);
+  
+    try{
+      const user = userRepository.findOne({id: uuid})
+      
+      return user
+
+    }catch(e){
+      //return new ResponseError("invalid credentials", 401)
+      return false
     }
   }
 
