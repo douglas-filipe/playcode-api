@@ -14,9 +14,14 @@ const usersRoute = (app: Express) => {
     UsersControllers.CreateUser
   );
   router.post("/login", validation(loginUserModel), UsersControllers.LoginUser);
-  router.get("/users", verifyToken, UsersControllers.GetUser)
+  router.get("/users", verifyToken, UsersControllers.GetUser);
+  router.put(
+    "/users",
+    verifyToken,
+    DuplicateEmail,
+    UsersControllers.UpdateUser
+  );
   app.use("/", router);
 };
-
 
 export default usersRoute;

@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { io } from "../app";
 import { ResponseError } from "../errors";
+
 import { UsersServices } from "../services";
 
 export class UsersControllers {
@@ -30,5 +31,16 @@ export class UsersControllers {
     const usersServices = new UsersServices();
     const user = await usersServices.ById(idUser);
     return res.json(user);
+  }
+
+  static async UpdateUser(req: Request, res: Response): Promise<Response> {
+    try {
+      const userService = new UsersServices();
+      const { idUser } = req;
+      const user = await userService.UpdateUser(idUser as string, req.body);
+      return res.json(user);
+    } catch (e) {
+      return res.status(400).json({ message: (e as Error).message });
+    }
   }
 }
