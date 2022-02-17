@@ -42,16 +42,9 @@ export class UsersServices {
   async ById(uuid: string | undefined){
 
     const userRepository = getCustomRepository(UsersRepositories);
-  
-    try{
-      const user = userRepository.findOne({id: uuid})
-      
-      return user
+    const user = userRepository.findOne({id: uuid})
+    return user
 
-    }catch(e){
-      //return new ResponseError("invalid credentials", 401)
-      return false
-    }
   }
 
 }
