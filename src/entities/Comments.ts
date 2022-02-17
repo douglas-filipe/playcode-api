@@ -5,9 +5,10 @@ import {
   ManyToOne,
   ManyToMany,
   JoinColumn,
+  JoinTable,
 } from "typeorm";
-import { User } from ".";
-// import { Videos } from ".";
+import User from "./User";
+import Video from "./Videos";
 import { v4 as uuidv4 } from "uuid";
 
 @Entity("comments")
@@ -18,15 +19,14 @@ class Comments {
   @Column()
   description!: string;
 
-  @ManyToOne(() => User)
+  @ManyToOne((type) => User, (user) => user.comments)
   @JoinColumn({ name: "user_id" })
   user!: User;
 
-  /* 
-  @ManyToMany(() => Videos)
-    @JoinColumn({name: "video_id"})
-    video!: Videos[];
-  */
+  @ManyToOne((type) => Video, (video) => video.comments)
+  @JoinColumn({ name: "video_id" })
+  video!: Video;
+
   constructor() {
     if (!this.id) {
       this.id = uuidv4();

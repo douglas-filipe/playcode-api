@@ -1,6 +1,14 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from "typeorm";
 import { v4 as uuid } from "uuid";
 import Channel from "./channel.entity";
+import Comments from "./Comments";
+// import Channel from "./Channel";
 
 @Entity("videos")
 export default class Video {
@@ -33,6 +41,9 @@ export default class Video {
 
   @ManyToOne((type) => Channel, (channel) => channel.videos)
   channel!: Channel;
+
+  @OneToMany((type) => Comments, (comments) => comments.video)
+  comments!: Comments[];
 
   constructor() {
     if (!this.id) {
