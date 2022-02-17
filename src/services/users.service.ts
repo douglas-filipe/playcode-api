@@ -5,16 +5,18 @@ import { IRequestBody } from "../types";
 import { ILoginUser } from "../types/IUser";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import dotenv from "dotenv";
-dotenv.config();
 
 export class UsersServices {
+  usersRepository: UsersRepositories;
+
+  constructor() {
+    this.usersRepository = getCustomRepository(UsersRepositories);
+  }
   async CreateUser(body: IRequestBody) {
-    const usersRepository = getCustomRepository(UsersRepositories);
-    const user = usersRepository.create({
+    const user = this.usersRepository.create({
       ...body,
     });
-    await usersRepository.save(user);
+    await this.usersRepository.save(user);
     const { password, ...others } = user;
     return others;
   }
@@ -22,7 +24,7 @@ export class UsersServices {
   async Authenticate(data: ILoginUser) {
     const { email, password } = data;
 
-    const user = await getCustomRepository(UsersRepositories).findOne({
+    const user = await this.usersRepository.findOne({
       email,
     });
 

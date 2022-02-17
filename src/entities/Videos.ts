@@ -1,5 +1,6 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { v4 as uuid } from "uuid";
+import Comments from "./Comments";
 // import Channel from "./Channel";
 
 @Entity("videos")
@@ -30,6 +31,9 @@ export default class Video {
 
   @Column({ type: "varchar" })
   duration!: string;
+
+  @OneToMany((type) => Comments, (comments) => comments.video)
+  comments!: Comments[];
 
   // @OneToMany((type) => Channel, (channel) => channel.id)
   // channel_id!: Channel[];

@@ -3,9 +3,6 @@ import { Request } from "express";
 
 module.exports = multer({
   storage: multer.memoryStorage(),
-  limits: {
-    fileSize: 10 * 1024 * 1024,
-  },
   fileFilter: (req: Request, file: any, cb: any) => {
     const isAccepted = [
       "image/png",
@@ -14,7 +11,7 @@ module.exports = multer({
       "video/mp4",
       "video/avi",
       "video/wmv",
-    ].find((formatoAceito) => formatoAceito == file.mimetype);
+    ].find((acceptedFormat) => acceptedFormat == file.mimetype);
     if (isAccepted) {
       return cb(null, true);
     }
