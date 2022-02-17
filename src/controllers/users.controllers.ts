@@ -43,4 +43,17 @@ export class UsersControllers {
       return res.status(400).json({ message: (e as Error).message });
     }
   }
+
+  static async DeleteUser (req: Request, res: Response): Promise<Response> {
+
+    const { idUser } = req
+    const userService = new UsersServices()
+    const messageDeleted = await userService.Delete(idUser as string)
+
+    if(messageDeleted){
+      return res.json({message: messageDeleted})
+    }
+
+    return res.status(404).json({message: "user not exists"})
+  }
 }

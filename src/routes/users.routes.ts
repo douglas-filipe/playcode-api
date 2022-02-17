@@ -14,7 +14,8 @@ const usersRoute = (app: Express) => {
     UsersControllers.CreateUser
   );
   router.post("/login", validation(loginUserModel), UsersControllers.LoginUser);
-  router.get("/users", verifyToken, UsersControllers.GetUser);
+  router.get("/users", verifyToken, UsersControllers.GetUser)
+  router.delete("/users", verifyToken, UsersControllers.DeleteUser)
   router.put(
     "/users",
     verifyToken,
