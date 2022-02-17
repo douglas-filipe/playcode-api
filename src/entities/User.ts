@@ -5,7 +5,9 @@ import {
   CreateDateColumn,
   BeforeInsert,
   BeforeUpdate,
+  OneToMany,
 } from "typeorm";
+import Comments from "./Comments";
 import bcryptjs from "bcryptjs";
 import { v4 as uuid } from "uuid";
 
@@ -28,6 +30,9 @@ export default class User {
 
   @CreateDateColumn()
   updatedOn!: Date;
+
+  @OneToMany((type) => Comments, (comments) => comments.user)
+  comments!: Comments[];
 
   @BeforeUpdate()
   updateDate() {
