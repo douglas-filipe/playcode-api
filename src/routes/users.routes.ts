@@ -1,6 +1,6 @@
 import { Router, Express } from "express";
 import { UsersControllers } from "../controllers";
-import { validation } from "../middlewares";
+import { validation, verifyToken } from "../middlewares";
 import { DuplicateEmail } from "../middlewares/user.middleware";
 import { createUserModel, loginUserModel } from "../models";
 
@@ -14,7 +14,9 @@ const usersRoute = (app: Express) => {
     UsersControllers.CreateUser
   );
   router.post("/login", validation(loginUserModel), UsersControllers.LoginUser);
+  router.get("/users", verifyToken, UsersControllers.GetUser)
   app.use("/", router);
 };
+
 
 export default usersRoute;

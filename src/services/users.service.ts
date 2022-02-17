@@ -34,7 +34,17 @@ export class UsersServices {
       const token = jwt.sign({ uuid: user.id }, process.env.SECRET as string, {
         expiresIn: "1d",
       });
+      
       return token;
     }
   }
+
+  async ById(uuid: string | undefined){
+
+    const userRepository = getCustomRepository(UsersRepositories);
+    const user = userRepository.findOne({id: uuid})
+    return user
+
+  }
+
 }
