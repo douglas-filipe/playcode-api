@@ -39,12 +39,30 @@ export class UsersServices {
     }
   }
 
-  async ById(uuid: string | undefined){
+  async ById(uuid: string){
 
     const userRepository = getCustomRepository(UsersRepositories);
-    const user = userRepository.findOne({id: uuid})
-    return user
+    const user = await userRepository.createQueryBuilder('users')
+    .select([
+      "users.id", 
+      "users.name",
+      "users.email",
+      "users.createdOn",
+      "users.updatedOn",
+    ]).where("users.id = :id", {id: uuid}).getOne()
 
+    return user
   }
 
+  async Delete(uuid: string){
+    
+    const userRepository = getCustomRepository(UsersRepositories)
+    const user = await userRepository.findOne({id: uuid})
+    if(!user){
+      return false
+    }
+    await userRepository.delete({id: uuid})
+    return "user has been deleted"
+
+  }
 }
