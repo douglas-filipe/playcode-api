@@ -7,8 +7,8 @@ import {
   JoinColumn,
   JoinTable,
 } from "typeorm";
-import { User } from ".";
-import { Video } from ".";
+import User from "./User";
+import Video from "./Videos";
 import { v4 as uuidv4 } from "uuid";
 
 @Entity("comments")
@@ -19,11 +19,11 @@ class Comments {
   @Column()
   description!: string;
 
-  @ManyToOne(() => User)
-  @JoinTable({ name: "user_id" })
+  @ManyToOne((type) => User, (user) => user.comments)
+  @JoinColumn({ name: "user_id" })
   user!: User;
 
-  @ManyToMany(() => Video)
+  @ManyToOne((type) => Video, (video) => video.comments)
   @JoinColumn({ name: "video_id" })
   video!: Video;
 
