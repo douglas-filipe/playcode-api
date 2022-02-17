@@ -1,4 +1,5 @@
 const dotenv = require("dotenv");
+const { Comments } = require("./src/entities");
 
 dotenv.config();
 

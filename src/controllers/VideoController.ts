@@ -4,12 +4,33 @@ import { VideoServices } from "../services";
 
 export class VideoControllers {
   async CreateVideo(req: Request, res: Response): Promise<Response> {
-    const video = new VideoServices();
+    try {
+      const video = new VideoServices();
 
-    const userFiles = req.files;
-    const user = await video.AddVideo(req.body, userFiles);
+      const userFiles: any = req.files;
 
-    return res.status(201).json(user);
+      let imgFile = userFiles.filter((e: any) => e.fieldname === "img")[0];
+      let vidFile = userFiles.filter((e: any) => e.fieldname === "video")[0];
+
+      if (imgFile === undefined) {
+        throw new ResponseError(
+          "Field 'img' is required, allowed extensions (png, jpg, jpeg)",
+          403
+        );
+      }
+      if (vidFile === undefined) {
+        throw new ResponseError(
+          "Field 'video' is required, allowed extensions (mp4, avi, wmv)",
+          403
+        );
+      }
+
+      const user = await video.AddVideo(req.body, imgFile, vidFile);
+
+      return res.status(201).json(user);
+    } catch (error: any) {
+      return res.status(error.statusCode).json({ error: error.message });
+    }
   }
   async FindOneById(req: Request, res: Response): Promise<Response> {
     try {
@@ -17,8 +38,19 @@ export class VideoControllers {
 
       const watchOne = await video.WatchVideo(req.params);
       return res.status(200).json(watchOne);
-    } catch (err: any) {
-      return res.status(404).json({ error: "Video not found" });
+    } catch (error: any) {
+      return res.status(error.statusCode).json({ error: error.message });
+    }
+  }
+  async UpdateById(req: Request, res: Response): Promise<Response> {
+    try {
+      const video = new VideoServices();
+
+      const updateData = await video.UpdateVideo(req.body, req.params);
+
+      return res.status(200).json(updateData);
+    } catch (error: any) {
+      return res.status(error.statusCode).json({ error: error.message });
     }
   }
 }

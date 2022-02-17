@@ -21,6 +21,13 @@ const io = new Server(server, {
   },
 });
 
+io.on("connection", (socket) => {
+  console.log("user connected: ", socket.id);
+  socket.on("disconnect", () => {
+    console.log(`socket ${socket.id} disconnected`);
+  });
+});
+
 app.get("/", (req, res) => {
   res.send("Running");
 });
@@ -37,13 +44,6 @@ app.use(
 app.use(logger);
 
 // app.use("/", swaggerUiExpress.serve, swaggerUiExpress.setup(swaggerDocument));
-io.emit("Teste");
-io.on("connection", (socket) => {
-  console.log("user connected: ", socket.id);
-  socket.on("disconnect", () => {
-    console.log(`socket ${socket.id} disconnected`);
-  });
-});
 
 //routers
 
