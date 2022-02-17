@@ -2,6 +2,7 @@ import {
   Column,
   Entity,
   JoinColumn,
+  JoinTable,
   ManyToMany,
   OneToOne,
   PrimaryGeneratedColumn,
@@ -27,7 +28,8 @@ export default class Channel {
   @JoinColumn()
   user!: User;
 
-  @ManyToMany((type) => User, (subs) => subs.channels)
+  @ManyToMany((type) => User, (subs) => subs.subs)
+  @JoinTable()
   subs!: User[];
 
   constructor() {

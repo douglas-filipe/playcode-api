@@ -38,7 +38,8 @@ export default class User {
   comments!: Comments[];
 
   @ManyToMany((type) => Channel, (channels) => channels.subs)
-  channels!: Channel[];
+  @JoinTable()
+  subs!: Channel[];
 
   @BeforeUpdate()
   updateDate() {
