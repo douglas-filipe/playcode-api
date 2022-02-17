@@ -14,18 +14,14 @@ const usersRoute = (app: Express) => {
     UsersControllers.CreateUser
   );
   router.post("/login", validation(loginUserModel), UsersControllers.LoginUser);
-<<<<<<< HEAD
   router.get("/users", verifyToken, UsersControllers.GetUser)
   router.delete("/users", verifyToken, UsersControllers.DeleteUser)
-=======
-  router.get("/users", verifyToken, UsersControllers.GetUser);
   router.put(
     "/users",
     verifyToken,
     DuplicateEmail,
     UsersControllers.UpdateUser
   );
->>>>>>> 43e636b18c14e8af3e827b8fe3a9839087cc4de9
   app.use("/", router);
 };
 
