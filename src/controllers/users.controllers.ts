@@ -20,7 +20,15 @@ export class UsersControllers {
       if (!e.statusCode) {
         console.log(e);
       }
+
       return res.status(e.statusCode).json({ message: e.message });
     }
+  }
+
+  static async GetUser(req: Request, res: Response): Promise<Response> {
+    const { idUser } = req;
+    const usersServices = new UsersServices();
+    const user = await usersServices.ById(idUser);
+    return res.json(user);
   }
 }
