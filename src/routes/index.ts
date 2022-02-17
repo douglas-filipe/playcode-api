@@ -1,5 +1,5 @@
 import channelRouter from "./channel.routes";
-import UsersRoute from "./UsersRoute";
+import UsersRoute from "./users.routes";
 import videosRoute from "./VideoRoutes";
 import watchRoute from "./WatchRoute";
 
