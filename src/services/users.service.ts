@@ -5,6 +5,7 @@ import { IRequestBody } from "../types";
 import { ILoginUser } from "../types/IUser";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import bcryptjs from "bcryptjs";
 
 export class UsersServices {
   usersRepository: UsersRepositories;
@@ -34,7 +35,7 @@ export class UsersServices {
       const token = jwt.sign({ uuid: user.id }, process.env.SECRET as string, {
         expiresIn: "1d",
       });
-      
+
       return token;
     }
   }
@@ -64,5 +65,27 @@ export class UsersServices {
     await userRepository.delete({id: uuid})
     return "user has been deleted"
 
+  }
+
+  async UpdateUser(id: string, body: IRequestBody) {
+    try {
+      const { password, email, name } = body;
+      const user = await this.usersRepository.findOne({ id });
+      if (!user) throw new Error("User Not Found");
+      const hashedPassword = bcryptjs.hashSync(password, 10);
+      user.password = password ? hashedPassword : user.password;
+      user.email = email ? email : user.email;
+      user.name = name ? name : user.name;
+      await this.usersRepository.save(user);
+      return {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        createdOn: user.createdOn,
+        updatedOn: user.updatedOn,
+      };
+    } catch (e) {
+      throw new Error((e as Error).message);
+    }
   }
 }
