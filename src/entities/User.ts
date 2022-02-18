@@ -5,9 +5,14 @@ import {
   CreateDateColumn,
   BeforeInsert,
   BeforeUpdate,
+  OneToMany,
+  ManyToMany,
+  JoinTable,
 } from "typeorm";
+import Comments from "./Comments";
 import bcryptjs from "bcryptjs";
 import { v4 as uuid } from "uuid";
+import Channel from "./channel.entity";
 
 @Entity("users")
 export default class User {
@@ -28,6 +33,13 @@ export default class User {
 
   @CreateDateColumn()
   updatedOn!: Date;
+
+  @OneToMany((type) => Comments, (comments) => comments.user)
+  comments!: Comments[];
+
+  @ManyToMany((type) => Channel, (channels) => channels.subs)
+  @JoinTable()
+  subs!: Channel[];
 
   @BeforeUpdate()
   updateDate() {
