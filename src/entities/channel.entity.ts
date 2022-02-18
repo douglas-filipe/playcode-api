@@ -3,6 +3,8 @@ import {
   Entity,
   JoinColumn,
   OneToMany,
+  JoinTable,
+  ManyToMany,
   OneToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
@@ -29,6 +31,10 @@ export default class Channel {
 
   @OneToMany((type) => Video, (video) => video.channel)
   videos!: Video[];
+
+  @ManyToMany((type) => User, (subs) => subs.subs)
+  @JoinTable()
+  subs!: User[];
 
   constructor() {
     if (!this.id) {
