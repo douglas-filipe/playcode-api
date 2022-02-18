@@ -1,28 +1,28 @@
 import { Request, Response } from "express";
-import { ChannelService } from "../services";
+import { ChannelService, UsersServices } from "../services";
 import { ResponseError } from "../errors";
-import { uploadVideo } from "../utils/UploadVideoData";
 
 export default class ChannelController {
   static async create(req: Request, res: Response) {
     try {
       // const { userId } = req;
-      const channel = req.body;
-      const channelFile = req.file;
-      const file = await uploadVideo(channelFile?.buffer, channelFile);
+      const channelName = req.body.name;
+      const file = req.files?.find((file: any) => file.fieldname === "img");
 
-      channel.avatarUrl = file.Location;
-      channel.avatarKey = file.Key;
+      if (!file) {
+        throw new ResponseError(
+          "Field 'img' is required, allowed extensions (png, jpg, jpeg)",
+          403
+        );
+      }
 
       const channelService = new ChannelService();
-      const newChannel = await channelService.add(channel);
+      const newChannel = await channelService.add(channelName, file);
 
-      // const userService = new UserService();
-      // const user = userService.byId(userId);
+      // const userService = new UsersServices();
+      // const user = userService.findById() // procurar usuario pelo id recebido pelo token
 
       // user.channel = newChannel;
-
-      // await userService.update(user);
 
       return res.status(201).json(newChannel);
     } catch (e: any) {

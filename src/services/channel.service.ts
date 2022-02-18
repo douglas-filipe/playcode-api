@@ -1,6 +1,8 @@
 import { FindOneOptions, getCustomRepository } from "typeorm";
 import { Channel } from "../entities";
+import { ResponseError } from "../errors";
 import { ChannelRepository } from "../repositories";
+import { uploadData } from "../utils/VideoDataManager";
 
 export class ChannelService {
   channelRepository: ChannelRepository;
@@ -9,7 +11,24 @@ export class ChannelService {
     this.channelRepository = getCustomRepository(ChannelRepository);
   }
 
-  async add(channel: Channel) {
+  async add(channelName: string, file: any) {
+    if (
+      (file.mimetype === "image/png" ||
+        file.mimetype === "image/jpg" ||
+        file.mimetype === "image/jpeg") &&
+      file.size > 2 * 1024 * 1024
+    ) {
+      throw new ResponseError("Image file cannot exceed 2MB", 400);
+    }
+
+    const avatar = await uploadData(file.buffer, file);
+
+    const channel = {
+      name: channelName,
+      avatarUrl: avatar.Location,
+      avatarKey: avatar.Key,
+    };
+
     const createdChannel = this.channelRepository.create(channel);
     await this.channelRepository.save(createdChannel);
 
