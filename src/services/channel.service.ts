@@ -41,8 +41,21 @@ export class ChannelService {
     return channel;
   }
 
-  async update(id: string, channel: Channel) {
-    await this.channelRepository.update(id, channel);
+  async update(id: string, channelName?: string, file?: any) {
+    const channel = await this.channelRepository.findOne({ id });
+
+    if (channelName && channel) {
+      channel.name = channelName;
+    }
+
+    if (file && channel) {
+      await deleteData(channel.avatarKey);
+      const avatar = await uploadData(file.buffer, file);
+      channel.avatarKey = avatar.Key;
+      channel.avatarUrl = avatar.Location;
+    }
+
+    await this.channelRepository.update(id, channel as Channel);
     const updated = await this.channelRepository.findOne({ id });
 
     return updated;

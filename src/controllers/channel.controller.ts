@@ -54,18 +54,22 @@ export default class ChannelController {
   static async update(req: Request, res: Response) {
     try {
       const { id } = req.params;
-      const { body } = req;
+      const channelName = req.body.name;
+      const file = req.files?.find((file: any) => file.fieldname === "img");
+
+      if (!file) {
+        throw new ResponseError(
+          "Field 'img' is required, allowed extensions (png, jpg, jpeg)",
+          403
+        );
+      }
 
       const channelService = new ChannelService();
-      const channel = await channelService.update(id, body);
-
-      if (!channel) {
-        throw new ResponseError("Channel not found.", 400);
-      }
+      const channel = await channelService.update(id, channelName, file);
 
       return res.json({ message: "channel updated", channel: channel });
     } catch (e: any) {
-      if (e.message === "Channel not found.") {
+      if (e.statusCode) {
         return res.status(e.statusCode).json({ message: e.message });
       }
 
