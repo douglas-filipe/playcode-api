@@ -80,4 +80,43 @@ export class VideoServices {
 
     return { message: "Video deleted" };
   }
+
+  async ListAllVideosRecents() {
+    const videos = await this.videoRepository
+      .createQueryBuilder("videos")
+      .leftJoinAndSelect("videos.likesvideos", "likesvideos")
+      .orderBy("videos.createdOn", "DESC")
+      .getMany();
+    return videos;
+  }
+  async ListAllVideosPopulate() {
+    const videos = await this.videoRepository
+      .createQueryBuilder("videos")
+      .leftJoinAndSelect("videos.likesvideos", "likesvideos")
+      .orderBy("videos.views", "DESC")
+      .orderBy("videos.likes", "DESC")
+      .getMany();
+    return videos;
+  }
+
+  async ListLimitVideosPopulate() {
+    const videos = await this.videoRepository
+      .createQueryBuilder("videos")
+      .leftJoinAndSelect("videos.likesvideos", "likesvideos")
+      .limit(6)
+      .orderBy("videos.views", "DESC")
+      .orderBy("videos.likes", "DESC")
+      .getMany();
+    return videos;
+  }
+
+  async ListLimitVideosRecents() {
+    const videos = await this.videoRepository
+      .createQueryBuilder("videos")
+      .leftJoinAndSelect("videos.likesvideos", "likesvideos")
+      .limit(6)
+      .orderBy("videos.createdOn", "DESC")
+      .getMany();
+    return videos;
+  }
 }
