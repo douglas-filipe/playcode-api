@@ -29,7 +29,7 @@ export class VideoControllers {
 
       return res.status(201).json(user);
     } catch (error: any) {
-      return res.status(400).json({ error: error.message });
+      return res.status(error.statusCode).json({ error: error.message });
     }
   }
   async FindOneById(req: Request, res: Response): Promise<Response> {
