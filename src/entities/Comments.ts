@@ -3,9 +3,7 @@ import {
   Entity,
   Column,
   ManyToOne,
-  ManyToMany,
   JoinColumn,
-  JoinTable,
 } from "typeorm";
 import User from "./user.entity";
 import Video from "./Videos";

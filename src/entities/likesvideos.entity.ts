@@ -2,10 +2,7 @@ import {
   Column,
   Entity,
   JoinColumn,
-  JoinTable,
-  ManyToMany,
   ManyToOne,
-  OneToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { v4 as uuidv4 } from "uuid";
@@ -22,11 +19,11 @@ export default class LikesVideos {
   @Column()
   video_id!: string;
 
-  @OneToOne(() => User)
+  @ManyToOne((type) => User, (user) => user.id)
   @JoinColumn({ name: "user_id" })
   user!: User;
 
-  @ManyToOne(() => Video)
+  @ManyToOne((type) => Video, (video) => video.id)
   @JoinColumn({ name: "video_id" })
   video!: Video;
 

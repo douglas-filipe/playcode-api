@@ -64,4 +64,30 @@ export class VideoControllers {
       return res.status(error.statusCode).json({ error: error.message });
     }
   }
+  async ListAllVideosRecents(req: Request, res: Response): Promise<Response> {
+    const videosServices = new VideoServices();
+    const videos = await videosServices.ListAllVideosRecents();
+    return res.json(videos);
+  }
+
+  async ListAllVideosPopulate(req: Request, res: Response): Promise<Response> {
+    const videosServices = new VideoServices();
+    const videos = await videosServices.ListAllVideosPopulate();
+    return res.json(videos);
+  }
+
+  async ListLimitVideosPopulate(
+    req: Request,
+    res: Response
+  ): Promise<Response> {
+    const videosServices = new VideoServices();
+    const videos = await videosServices.ListLimitVideosPopulate();
+    return res.json(videos);
+  }
+
+  async ListLimitVideosRecents(req: Request, res: Response): Promise<Response> {
+    const videosServices = new VideoServices();
+    const videos = await videosServices.ListLimitVideosRecents();
+    return res.json(videos);
+  }
 }
