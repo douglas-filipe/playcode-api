@@ -29,7 +29,7 @@ export class VideoControllers {
 
       return res.status(201).json(user);
     } catch (error: any) {
-      return res.status(error.statusCode).json({ error: error.message });
+      return res.status(400).json({ error: error.message });
     }
   }
   async FindOneById(req: Request, res: Response): Promise<Response> {
@@ -49,6 +49,17 @@ export class VideoControllers {
       const updateData = await video.UpdateVideo(req.body, req.params);
 
       return res.status(200).json(updateData);
+    } catch (error: any) {
+      return res.status(error.statusCode).json({ error: error.message });
+    }
+  }
+  async DeleteById(req: Request, res: Response): Promise<Response> {
+    try {
+      const video = new VideoServices();
+
+      await video.DeleteVideo(req.params);
+
+      return res.status(204);
     } catch (error: any) {
       return res.status(error.statusCode).json({ error: error.message });
     }

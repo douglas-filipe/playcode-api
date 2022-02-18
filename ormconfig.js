@@ -47,6 +47,10 @@ const developmentEnv = {
     migrationsDir: "./src/migrations",
   },
   logging: true,
+  aws_access_key_id: process.env.AWS_ACCESS_KEY_ID,
+  aws_secret_access_key: process.env.AWS_SECRET_ACCESS_KEY,
+  aws_default_region: process.env.AWS_DEFAULT_REGION,
+  aws_bucket: process.env.S3_BUCKET,
 };
 
 module.exports = developmentEnv;

@@ -2,7 +2,7 @@ import { getCustomRepository } from "typeorm";
 import { ResponseError } from "../errors";
 import { VideoRepositories } from "../repositories";
 import { IVideos } from "../types/IVideo";
-import { uploadVideo } from "../utils/UploadVideoData";
+import { deleteData, uploadData } from "../utils/VideoDataManager";
 
 export class VideoServices {
   videoRepository: VideoRepositories;
@@ -20,8 +20,8 @@ export class VideoServices {
       throw new ResponseError("Image file cannot exceed 2MB", 400);
     }
 
-    const file = await uploadVideo(imgFile.buffer, imgFile);
-    const videoFiles = await uploadVideo(vidFile.buffer, vidFile);
+    const file = await uploadData(imgFile.buffer, imgFile);
+    const videoFiles = await uploadData(vidFile.buffer, vidFile);
 
     const video = this.videoRepository.create({
       name: body.name,
@@ -66,5 +66,18 @@ export class VideoServices {
     } catch (e) {
       throw new ResponseError("Video not found", 404);
     }
+  }
+  async DeleteVideo(id: any) {
+    const video = await this.videoRepository.findOne(id);
+
+    if (video === undefined) {
+      throw new ResponseError("Video not found", 404);
+    }
+
+    deleteData(video?.tumbkey);
+    deleteData(video?.videokey);
+    await this.videoRepository.delete(id);
+
+    return { message: "Video deleted" };
   }
 }
