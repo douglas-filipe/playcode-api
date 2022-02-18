@@ -1,6 +1,6 @@
 import express from "express";
 import { logger } from "./middlewares";
-import { channelRouter, watchRoute } from "./routes";
+import { channelRouter, watchRoute, commentsRoute } from "./routes";
 import usersRoute from "./routes/users.routes";
 import videoRoute from "./routes/video.routes";
 import http from "http";
@@ -51,5 +51,6 @@ usersRoute(app);
 channelRouter(app);
 videoRoute(app);
 watchRoute(app);
+commentsRoute(app)
 
 export { app, server, io };
