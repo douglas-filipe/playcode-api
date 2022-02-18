@@ -7,7 +7,7 @@ import {
   JoinColumn,
   JoinTable,
 } from "typeorm";
-import User from "./User";
+import User from "./user.entity";
 import Video from "./Videos";
 import { v4 as uuidv4 } from "uuid";
 

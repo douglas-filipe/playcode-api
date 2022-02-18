@@ -1,4 +1,4 @@
-import User from "./User";
+import User from "./user.entity";
 import Channel from "./channel.entity";
 import Video from "./Videos";
 import Comments from "./Comments";
