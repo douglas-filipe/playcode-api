@@ -4,10 +4,11 @@ import {
   ICreateUsers,
   IerrorsYup,
   ILoginUsers,
+  ICreateComments
 } from "../types/validationTypes";
 
 export const validation =
-  (schema: SchemaOf<ICreateUsers | ILoginUsers>) =>
+  (schema: SchemaOf<ICreateUsers | ILoginUsers | ICreateComments>) =>
   async (req: Request, res: Response, next: NextFunction) => {
     const resource = req.body;
     try {

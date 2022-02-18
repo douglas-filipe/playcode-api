@@ -1,3 +1,6 @@
 import { IRequestBody } from "./IUser";
+import { IComments } from "./IComments";
+import { IVideos } from './IVideo'
 
-export { IRequestBody };
+export { IRequestBody, IComments, IVideos };
+
