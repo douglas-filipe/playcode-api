@@ -3,6 +3,8 @@ import { VideoControllers } from "../controllers/video.controller";
 import { validation } from "../middlewares/validation.middleware";
 import { VideoModel } from "../models/videoModel.validation";
 import multer from "multer";
+import { verifyToken } from "../middlewares";
+import { LikesVideosControllers } from "../controllers/likesvideos.controllers";
 
 const videoControllers = new VideoControllers();
 const multerConfig = require("../configs/multer");
@@ -18,6 +20,7 @@ const videosRoute = (app: Express) => {
   );
   router.put("/:id", validation(VideoModel), videoControllers.UpdateById);
   router.delete("/:id", videoControllers.DeleteById);
+  router.post("/like/:id", verifyToken, LikesVideosControllers.LikeVideo);
 
   app.use("/videos", router);
 };
