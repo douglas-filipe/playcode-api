@@ -53,4 +53,15 @@ export class VideoControllers {
       return res.status(error.statusCode).json({ error: error.message });
     }
   }
+  async DeleteById(req: Request, res: Response): Promise<Response> {
+    try {
+      const video = new VideoServices();
+
+      await video.DeleteVideo(req.params);
+
+      return res.status(204);
+    } catch (error: any) {
+      return res.status(error.statusCode).json({ error: error.message });
+    }
+  }
 }
