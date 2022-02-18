@@ -9,10 +9,15 @@ export interface ILoginUsers {
   password: string;
 }
 
-export interface ICreateComments{
-  description: string
+export interface ICreateComments {
+  description: string;
 }
 
 export interface IerrorsYup {
   errors: [string];
+}
+
+export interface IcreateComments {
+  description: string;
+  video: string;
 }

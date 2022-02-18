@@ -1,27 +1,29 @@
 import {
-  PrimaryGeneratedColumn,
-  Entity,
   Column,
-  ManyToOne,
+  Entity,
   JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
 } from "typeorm";
-import User from "./user.entity";
-import Video from "./Videos";
 import { v4 as uuidv4 } from "uuid";
+import { User, Video } from ".";
 
-@Entity("comments")
-class Comments {
+@Entity("likesvideos")
+export default class LikesVideos {
   @PrimaryGeneratedColumn("uuid")
   id!: string;
 
   @Column()
-  description!: string;
+  user_id!: string;
 
-  @ManyToOne((type) => User, (user) => user.comments)
+  @Column()
+  video_id!: string;
+
+  @ManyToOne((type) => User, (user) => user.id)
   @JoinColumn({ name: "user_id" })
   user!: User;
 
-  @ManyToOne((type) => Video, (video) => video.comments, {eager: true})
+  @ManyToOne((type) => Video, (video) => video.id)
   @JoinColumn({ name: "video_id" })
   video!: Video;
 
@@ -31,4 +33,3 @@ class Comments {
     }
   }
 }
-export default Comments;
