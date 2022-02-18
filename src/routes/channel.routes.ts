@@ -1,14 +1,24 @@
 import { Router, Express } from "express";
+import multer from "multer";
 import { ChannelController } from "../controllers";
 import { chanelNotExist, verifyError } from "../middlewares";
+const multerConfig = require("../configs/multer");
 
 const router = Router();
 
 const channelRouter = (app: Express) => {
-  router.post("", ChannelController.create);
-  router.get("/:id", chanelNotExist, verifyError, ChannelController.byId) // está apenas com o middleware
+  router.post("", multer(multerConfig).any(), ChannelController.create);
+  router.get("/:id", chanelNotExist, verifyError, ChannelController.byId);
+  router.patch(
+    "/:id",
+    multer(multerConfig).any(),
+    chanelNotExist,
+    verifyError,
+    ChannelController.update
+  );
+  router.delete("/:id", chanelNotExist, verifyError, ChannelController.delete);
+
   app.use("/channel", router);
 };
-
 
 export default channelRouter;

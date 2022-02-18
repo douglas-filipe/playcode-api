@@ -1,22 +1,28 @@
 import { Request, Response } from "express";
-import { ChannelService } from "../services";
+import { ChannelService, UsersServices } from "../services";
 import { ResponseError } from "../errors";
 
 export default class ChannelController {
   static async create(req: Request, res: Response) {
     try {
-      const channel = req.body;
       // const { userId } = req;
+      const channelName = req.body.name;
+      const file = req.files?.find((file: any) => file.fieldname === "img");
+
+      if (!file) {
+        throw new ResponseError(
+          "Field 'img' is required, allowed extensions (png, jpg, jpeg)",
+          403
+        );
+      }
 
       const channelService = new ChannelService();
-      const newChannel = await channelService.add(channel);
+      const newChannel = await channelService.add(channelName, file);
 
-      // const userService = new UserService();
-      // const user = userService.byId(userId);
+      // const userService = new UsersServices();
+      // const user = userService.findById() // procurar usuario pelo id recebido pelo token
 
       // user.channel = newChannel;
-
-      // await userService.update(user);
 
       return res.status(201).json(newChannel);
     } catch (e: any) {
@@ -48,18 +54,22 @@ export default class ChannelController {
   static async update(req: Request, res: Response) {
     try {
       const { id } = req.params;
-      const { body } = req;
+      const channelName = req.body.name;
+      const file = req.files?.find((file: any) => file.fieldname === "img");
+
+      if (!file) {
+        throw new ResponseError(
+          "Field 'img' is required, allowed extensions (png, jpg, jpeg)",
+          403
+        );
+      }
 
       const channelService = new ChannelService();
-      const channel = await channelService.update(id, body);
-
-      if (!channel) {
-        throw new ResponseError("Channel not found.", 400);
-      }
+      const channel = await channelService.update(id, channelName, file);
 
       return res.json({ message: "channel updated", channel: channel });
     } catch (e: any) {
-      if (e.message === "Channel not found.") {
+      if (e.statusCode) {
         return res.status(e.statusCode).json({ message: e.message });
       }
 
@@ -78,6 +88,9 @@ export default class ChannelController {
 
       return res.json({ message: response });
     } catch (e: any) {
+      if (e.statusCode) {
+        return res.status(e.statusCode).json({ message: e.message });
+      }
       const message = e.message;
 
       return res.status(400).json({ message });
