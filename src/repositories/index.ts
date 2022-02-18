@@ -1,6 +1,9 @@
 import { ChannelRepository } from "./channel.repository";
+
 import { UsersRepositories } from "./users.repository";
-import { VideoRepositories } from "./VideoRepository";
+
+import { VideoRepositories } from "./video.repository";
+
 import { CommentsRepository } from "./CommentsRepository";
 
 export {
