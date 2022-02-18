@@ -84,6 +84,9 @@ export default class ChannelController {
 
       return res.json({ message: response });
     } catch (e: any) {
+      if (e.statusCode) {
+        return res.status(e.statusCode).json({ message: e.message });
+      }
       const message = e.message;
 
       return res.status(400).json({ message });

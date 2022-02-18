@@ -2,7 +2,7 @@ import { FindOneOptions, getCustomRepository } from "typeorm";
 import { Channel } from "../entities";
 import { ResponseError } from "../errors";
 import { ChannelRepository } from "../repositories";
-import { uploadData } from "../utils/VideoDataManager";
+import { deleteData, uploadData } from "../utils/VideoDataManager";
 
 export class ChannelService {
   channelRepository: ChannelRepository;
@@ -49,6 +49,10 @@ export class ChannelService {
   }
 
   async delete(id: string) {
+    const channel = await this.channelRepository.findOne({ id });
+
+    await deleteData(channel?.avatarKey);
+
     await this.channelRepository.delete({ id });
 
     return "channel has been deleted";
