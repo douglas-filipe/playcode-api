@@ -9,7 +9,7 @@ import {
   ManyToMany,
   JoinTable,
 } from "typeorm";
-import Comments from "./Comments";
+import Comments from "./comments.entity";
 import bcryptjs from "bcryptjs";
 import { v4 as uuid } from "uuid";
 import Channel from "./channel.entity";
