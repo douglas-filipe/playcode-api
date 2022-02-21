@@ -10,7 +10,7 @@ import {
 import { v4 as uuid } from "uuid";
 import Channel from "./channel.entity";
 import { LikesVideos } from ".";
-import Comments from "./Comments";
+import Comments from "./comments.entity";
 
 @Entity("video")
 export default class Video {
