@@ -39,4 +39,9 @@ export class ChatServices {
     io.to(room_id).emit("message", message);
     return message;
   }
+
+  async ListMessagesRoom(room_id: string) {
+    const messages = this.messageRepository.find({ where: { room_id } });
+    return messages;
+  }
 }

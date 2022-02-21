@@ -21,4 +21,13 @@ export class ChatControllers {
       return res.status(400).json({ message: "Error" });
     }
   }
+
+  static async ListMessagesRoom(
+    req: Request,
+    res: Response
+  ): Promise<Response> {
+    const chatService = new ChatServices();
+    const messages = await chatService.ListMessagesRoom(req.params.room_id);
+    return res.json(messages);
+  }
 }
