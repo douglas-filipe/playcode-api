@@ -1,15 +1,13 @@
 import express from "express";
 import { logger } from "./middlewares";
-import { channelRouter, watchRoute, commentsRoute } from "./routes";
+import { channelRouter, watchRoute, commentsRoute, chatRouter } from "./routes";
 import usersRoute from "./routes/users.routes";
-
-
 
 import videoRoute from "./routes/video.routes";
 import http from "http";
 import cors from "cors";
 import { Server } from "socket.io";
-
+import { Chat } from "./websocket";
 
 // import swaggerUiExpress from "swagger-ui-express";
 // import swaggerDocument from "./swagger.json";
@@ -17,19 +15,13 @@ import { Server } from "socket.io";
 const app = express();
 const server = http.createServer(app);
 
+//Criando servidor com socket io
 const io = new Server(server, {
   cors: {
     origin: "*",
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   },
-});
-
-io.on("connection", (socket) => {
-  console.log("user connected: ", socket.id);
-  socket.on("disconnect", () => {
-    console.log(`socket ${socket.id} disconnected`);
-  });
 });
 
 app.get("/", (req, res) => {
@@ -55,6 +47,9 @@ usersRoute(app);
 channelRouter(app);
 videoRoute(app);
 watchRoute(app);
-commentsRoute(app)
+commentsRoute(app);
+chatRouter(app);
+//SocketIO sendo chamado
+Chat.webSocket(app);
 
 export { app, server, io };
