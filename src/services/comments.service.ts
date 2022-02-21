@@ -18,4 +18,13 @@ export class CommentsService {
             description: comment.description
         }
     }
+
+    async delete(id: string){
+        try{
+            await this.commentsRepository.delete({id})
+            return true
+        }catch(e){
+            return false 
+        }
+    }
 }
