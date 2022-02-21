@@ -7,7 +7,9 @@ export default class ChannelController {
     try {
       const { idUser } = req;
       const channelName = req.body.name;
-      const file = req.files?.find((file: any) => file.fieldname === "img");
+      const files: any = req.files;
+
+      let file = files.find((file: any) => file.fieldname === "img");
 
       if (!file) {
         throw new ResponseError(
@@ -57,7 +59,9 @@ export default class ChannelController {
     try {
       const { id } = req.params;
       const channelName = req.body.name;
-      const file = req.files?.find((file: any) => file.fieldname === "img");
+      const files: any = req.files;
+
+      let file = files.find((file: any) => file.fieldname === "img");
 
       if (!file) {
         throw new ResponseError(
