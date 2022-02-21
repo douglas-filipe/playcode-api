@@ -5,7 +5,7 @@ import { ResponseError } from "../errors";
 export default class ChannelController {
   static async create(req: Request, res: Response) {
     try {
-      // const { userId } = req;
+      const { idUser } = req;
       const channelName = req.body.name;
       const file = req.files?.find((file: any) => file.fieldname === "img");
 
@@ -16,13 +16,15 @@ export default class ChannelController {
         );
       }
 
+      const userService = new UsersServices();
+      const user = await userService.usersRepository.findOne({
+        id: idUser as string,
+      }); // procurar usuario pelo id recebido pelo token
+
       const channelService = new ChannelService();
-      const newChannel = await channelService.add(channelName, file);
+      const newChannel = await channelService.add(channelName, file, user);
 
-      // const userService = new UsersServices();
-      // const user = userService.findById() // procurar usuario pelo id recebido pelo token
-
-      // user.channel = newChannel;
+      newChannel.user.password = "*".repeat(8);
 
       return res.status(201).json(newChannel);
     } catch (e: any) {
