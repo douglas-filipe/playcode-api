@@ -9,4 +9,4 @@ services:
     environment:
       - POSTGRES_USER=admin
       - POSTGRES_PASSWORD=1234
-      - POSTGRES_DB=db_playcode
+      - POSTGRES_DB=local
