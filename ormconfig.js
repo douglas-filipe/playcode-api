@@ -38,5 +38,4 @@ const config = {
   aws_bucket: process.env.S3_BUCKET,
 };
 
-
 module.exports = config;
