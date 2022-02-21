@@ -1,6 +1,6 @@
 import express from "express";
 import { logger } from "./middlewares";
-import { channelRouter, watchRoute, commentsRoute, chatRouter } from "./routes";
+import { channelRouter, watchRoute, commentsRoute, chatRouter, tagsRoute } from "./routes";
 import usersRoute from "./routes/users.routes";
 
 import videoRoute from "./routes/video.routes";
@@ -49,6 +49,7 @@ videoRoute(app);
 watchRoute(app);
 commentsRoute(app);
 chatRouter(app);
+tagsRoute(app)
 //SocketIO sendo chamado
 Chat.webSocket(app);
 
