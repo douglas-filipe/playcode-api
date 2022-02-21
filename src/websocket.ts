@@ -31,10 +31,6 @@ export class Chat {
         console.log("join user", name);
       });
 
-      socket.on("Teste", (data) => {
-        console.log(data);
-      });
-
       /* socket.on("sendMessage", (text, room_id, user_id, name) => {
         if (!room_id || !user_id || !name) {
           return app.response.status(400).json("Error");

@@ -32,54 +32,11 @@ const config = {
     migrationsDir: "src/migrations",
     subscribersDir: "src/subscriber",
   },
-};
-
-const developmentEnv = {
-  type: process.env.CONNECTION,
-  host: process.env.HOST,
-  port: process.env.PORT_POSTGRES,
-  database: process.env.DATABASE,
-  username: process.env.USER_NAME,
-  password: process.env.PASSWORD,
-  entities: ["./src/entities/**/*.ts"],
-  migrations: ["./src/migrations/*.ts"],
-  cli: {
-    migrationsDir: "./src/migrations",
-  },
-  extra: {
-    ssl: {
-      rejectUnauthorized: false,
-    },
-  },
-  logging: true,
   aws_access_key_id: process.env.AWS_ACCESS_KEY_ID,
   aws_secret_access_key: process.env.AWS_SECRET_ACCESS_KEY,
   aws_default_region: process.env.AWS_DEFAULT_REGION,
   aws_bucket: process.env.S3_BUCKET,
 };
 
-const productionEnv = {
-  type: process.env.CONNECTION,
-  host: process.env.HOST,
-  port: process.env.PORT_POSTGRES,
-  database: process.env.DATABASE,
-  username: process.env.USER_NAME,
-  password: process.env.PASSWORD,
-  entities: ["./dist/entities/**/*.js"],
-  migrations: ["./dist/migrations/*.js"],
-  cli: {
-    migrationsDir: "./dist/migrations",
-  },
-  extra: {
-    ssl: {
-      rejectUnauthorized: false,
-    },
-  },
-  logging: true,
-  aws_access_key_id: process.env.AWS_ACCESS_KEY_ID,
-  aws_secret_access_key: process.env.AWS_SECRET_ACCESS_KEY,
-  aws_default_region: process.env.AWS_DEFAULT_REGION,
-  aws_bucket: process.env.S3_BUCKET,
-};
 
-module.exports = productionEnv;
+module.exports = config;

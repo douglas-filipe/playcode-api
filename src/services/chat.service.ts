@@ -33,10 +33,10 @@ export class ChatServices {
     const message = this.messageRepository.create({ ...body });
     await this.messageRepository.save(message);
     const { room_id } = message;
-    const listMessages = await this.messageRepository.find({
+    /* const listMessages = await this.messageRepository.find({
       where: { room_id: body.room_id },
-    });
-    io.to(room_id).emit("message", listMessages, room_id);
+    }); */
+    io.to(room_id).emit("message", message);
     return message;
   }
 }
