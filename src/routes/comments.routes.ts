@@ -11,7 +11,9 @@ const commentsRouter = (app: Express) => {
     validation(createCommentsModel),
     CommentsController.create
   );
-  router.delete("/:id", CommentsController.delete)
+  router.delete("/:id", CommentsController.delete);
+  router.get("/", CommentsController.ListComments);
+  router.put("/:id", CommentsController.UpdateCommentary);
   app.use("/comments", router);
 };
 
