@@ -4,6 +4,7 @@ import videosRoute from "./video.routes";
 import watchRoute from "./watch.routes";
 import commentsRoute from "./comments.routes";
 import chatRouter from "./chat.routes";
+import tagsRoute from "./tags.routes";
 
 export {
   UsersRoute,
@@ -12,4 +13,5 @@ export {
   watchRoute,
   commentsRoute,
   chatRouter,
+  tagsRoute
 };
