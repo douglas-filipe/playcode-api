@@ -1,5 +1,5 @@
 import { FindOneOptions, getCustomRepository } from "typeorm";
-import { Channel } from "../entities";
+import { Channel, User } from "../entities";
 import { ResponseError } from "../errors";
 import { ChannelRepository } from "../repositories";
 import { deleteData, uploadData } from "../utils/VideoDataManager";
@@ -11,7 +11,7 @@ export class ChannelService {
     this.channelRepository = getCustomRepository(ChannelRepository);
   }
 
-  async add(channelName: string, file: any) {
+  async add(channelName: string, file: any, user?: User) {
     if (
       (file.mimetype === "image/png" ||
         file.mimetype === "image/jpg" ||
@@ -30,6 +30,11 @@ export class ChannelService {
     };
 
     const createdChannel = this.channelRepository.create(channel);
+
+    if (user) {
+      createdChannel.user = user;
+    }
+
     await this.channelRepository.save(createdChannel);
 
     return createdChannel;
