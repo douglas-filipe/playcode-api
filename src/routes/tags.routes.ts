@@ -5,7 +5,7 @@ const router = Router()
 
 const tagsRoute = (app: Express) => {
     router.post("", TagsController.create)
-
+    router.delete("/:id", TagsController.delete)
     app.use("/tags", router)
 }
 

@@ -15,4 +15,13 @@ export class TagsService {
         return tag
     }
     
+   async delete(id:string){
+    const deleted = await this.tagsRepository.delete({id})
+    
+    if(deleted.affected){
+        return true
+    }
+    return false
+   }
+  
 }
