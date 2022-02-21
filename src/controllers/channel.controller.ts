@@ -5,9 +5,11 @@ import { ResponseError } from "../errors";
 export default class ChannelController {
   static async create(req: Request, res: Response) {
     try {
-      // const { userId } = req;
-      /* const channelName = req.body.name;
-      const file = req.files?.find((file: any) => file.fieldname === "img");
+      const { idUser } = req;
+      const channelName = req.body.name;
+      const files: any = req.files;
+
+      let file = files.find((file: any) => file.fieldname === "img");
 
       if (!file) {
         throw new ResponseError(
@@ -26,7 +28,7 @@ export default class ChannelController {
 
       newChannel.user.password = "*".repeat(8);
 
-      return res.status(201).json(newChannel); */
+      return res.status(201).json(newChannel);
     } catch (e: any) {
       return res.status(400).json({ message: e.message });
     }
@@ -55,7 +57,7 @@ export default class ChannelController {
 
   static async update(req: Request, res: Response) {
     try {
-      /* const { id } = req.params;
+      const { id } = req.params;
       const channelName = req.body.name;
       const files: any = req.files;
 
@@ -71,7 +73,7 @@ export default class ChannelController {
       const channelService = new ChannelService();
       const channel = await channelService.update(id, channelName, file);
 
-      return res.json({ message: "channel updated", channel: channel }); */
+      return res.json({ message: "channel updated", channel: channel });
     } catch (e: any) {
       if (e.statusCode) {
         return res.status(e.statusCode).json({ message: e.message });
