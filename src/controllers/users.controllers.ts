@@ -13,10 +13,9 @@ export class UsersControllers {
 
   static async LoginUser(req: Request, res: Response): Promise<Response> {
     const userService = new UsersServices();
-    io.emit("Teste", "Teste");
     try {
-      const token = await userService.Authenticate(req.body);
-      return res.json({ token: token });
+      const user = await userService.Authenticate(req.body);
+      return res.json(user);
     } catch (e: any) {
       if (!e.statusCode) {
         console.log(e);

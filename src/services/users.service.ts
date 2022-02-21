@@ -36,35 +36,37 @@ export class UsersServices {
         expiresIn: "1d",
       });
 
-      return token;
+      const { password, ...others } = user;
+
+      return { token, ...others };
     }
   }
 
-  async ById(uuid: string){
-
+  async ById(uuid: string) {
     const userRepository = getCustomRepository(UsersRepositories);
-    const user = await userRepository.createQueryBuilder('users')
-    .select([
-      "users.id", 
-      "users.name",
-      "users.email",
-      "users.createdOn",
-      "users.updatedOn",
-    ]).where("users.id = :id", {id: uuid}).getOne()
+    const user = await userRepository
+      .createQueryBuilder("users")
+      .select([
+        "users.id",
+        "users.name",
+        "users.email",
+        "users.createdOn",
+        "users.updatedOn",
+      ])
+      .where("users.id = :id", { id: uuid })
+      .getOne();
 
-    return user
+    return user;
   }
 
-  async Delete(uuid: string){
-    
-    const userRepository = getCustomRepository(UsersRepositories)
-    const user = await userRepository.findOne({id: uuid})
-    if(!user){
-      return false
+  async Delete(uuid: string) {
+    const userRepository = getCustomRepository(UsersRepositories);
+    const user = await userRepository.findOne({ id: uuid });
+    if (!user) {
+      return false;
     }
-    await userRepository.delete({id: uuid})
-    return "user has been deleted"
-
+    await userRepository.delete({ id: uuid });
+    return "user has been deleted";
   }
 
   async UpdateUser(id: string, body: IRequestBody) {
