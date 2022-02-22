@@ -15,7 +15,6 @@ export class CommentsController {
     const commentService = new CommentsService();
     const { id } = req.params;
     const deleted = await commentService.delete(id);
-
     if (!deleted) {
       return res.status(404).json({ message: "comment not found" });
     }
