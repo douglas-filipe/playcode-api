@@ -20,12 +20,17 @@ export class TagsController{
         const tagService = new TagsService()
         const { id } = req.params
         const deleted = await tagService.delete(id)
-
+        
         if(!deleted){
             return res.status(404).json({message: "tag not found"})
         }
-
+        
         return res.json({message: "tag deleted!"})
     }
-
+    
+    static async list(req: Request, res: Response){
+        const tagService = new TagsService()
+        const tags = await tagService.list()
+        return res.json(tags)
+    }
 }
