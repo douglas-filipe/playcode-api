@@ -27,10 +27,6 @@ export class VideoServices {
       throw new ResponseError("User doesn't have a channel", 404);
     }
 
-    //
-    //
-    //
-
     const { imgFile, vidFile } = userFiles.reduce((acc: any, cur: any) => {
       if (cur.fieldname === "img") {
         return { ...acc, imgFile: cur };
@@ -98,7 +94,10 @@ export class VideoServices {
         views: Number(CurViews) + 1,
       });
 
-      const watch = this.videoRepository.findOne(id);
+      const watch = this.videoRepository.findOne({
+        where: { id: id.id },
+        relations: ["channel", "likesvideos", "comments"],
+      });
 
       return watch;
     } catch (e) {
