@@ -13,6 +13,7 @@ const channelRouter = (app: Express) => {
     multer(multerConfig).any(),
     ChannelController.create
   );
+  router.get("", ChannelController.all);
   router.get("/:id", chanelNotExist, verifyError, ChannelController.byId);
   router.patch(
     "/:id",

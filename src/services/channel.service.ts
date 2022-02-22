@@ -1,7 +1,8 @@
-import { FindOneOptions, getCustomRepository } from "typeorm";
+import { FindManyOptions, FindOneOptions, getCustomRepository } from "typeorm";
 import { Channel, User } from "../entities";
 import { ResponseError } from "../errors";
 import { ChannelRepository } from "../repositories";
+import { IChannelWithoutUserPassword } from "../types/IChannel";
 import { deleteData, uploadData } from "../utils/VideoDataManager";
 
 export class ChannelService {
@@ -40,10 +41,16 @@ export class ChannelService {
     return createdChannel;
   }
 
+  async all(options?: FindManyOptions<Channel>) {
+    const channels = await this.channelRepository.find(options);
+
+    return channels as IChannelWithoutUserPassword[];
+  }
+
   async byId(id: string, options?: FindOneOptions<Channel>) {
     const channel = await this.channelRepository.findOne({ id }, options);
 
-    return channel;
+    return channel as IChannelWithoutUserPassword;
   }
 
   async update(id: string, channelName?: string, file?: any) {

@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { ChannelService, UsersServices } from "../services";
 import { ResponseError } from "../errors";
+import { IUSerWithoutPassword } from "../types/IUser";
 
 export default class ChannelController {
   static async create(req: Request, res: Response) {
@@ -34,6 +35,22 @@ export default class ChannelController {
     }
   }
 
+  static async all(req: Request, res: Response) {
+    try {
+      const channelService = new ChannelService();
+      const channels = await channelService.all({ relations: ["user"] });
+
+      const secureChannels = channels.map((channel) => {
+        let newChannel = channel;
+        const { password, ...secureUser } = channel.user;
+        newChannel.user = secureUser;
+        return newChannel;
+      });
+
+      return res.json(secureChannels);
+    } catch (e: any) {}
+  }
+
   static async byId(req: Request, res: Response) {
     try {
       const { id } = req.params;
@@ -43,7 +60,15 @@ export default class ChannelController {
         relations: ["user", "videos", "subs"],
       });
 
-      return res.json(channel);
+      if (!channel) {
+        throw new ResponseError("user not found", 404);
+      }
+
+      const { password, ...userWithoutPassword } = channel.user;
+      let secureChannel = channel;
+      secureChannel.user = userWithoutPassword;
+
+      return res.json(secureChannel);
     } catch (e: any) {
       if (!e.statusCode) {
         return res.status(400).json({ message: e.message });
