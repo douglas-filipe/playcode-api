@@ -1,5 +1,6 @@
 import { FindOneOptions, getCustomRepository } from "typeorm";
-import { Channel, User } from "../entities";
+import Channel from "../entities/channel.entity";
+import User from "../entities/user.entity";
 import { ResponseError } from "../errors";
 import { ChannelRepository } from "../repositories";
 import { deleteData, uploadImage } from "../utils/VideoDataManager";

@@ -7,7 +7,11 @@ import {
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { v4 as uuidv4 } from "uuid";
+<<<<<<< HEAD
 
+=======
+import User from "./user.entity";
+>>>>>>> origin
 import Room from "./room.entity";
 import User from "./user.entity";
 
