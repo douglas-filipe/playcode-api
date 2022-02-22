@@ -28,11 +28,15 @@ export class VideoControllers {
     try {
       const video = new VideoServices();
 
-      const updateData = await video.UpdateVideo(req.body, req.params);
+      const updateData = await video.UpdateVideo(
+        req.body,
+        req.params.id,
+        req.user
+      );
 
       return res.status(200).json(updateData);
     } catch (error: any) {
-      return res.status(error.statusCode).json({ error: error.message });
+      return res.status(400).json({ error: error.message });
     }
   }
   async DeleteById(req: Request, res: Response): Promise<Response> {

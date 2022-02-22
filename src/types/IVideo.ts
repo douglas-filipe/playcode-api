@@ -2,6 +2,7 @@ export interface IVideos {
   name: string;
   description: string;
   duration: string;
+  channelId?: string;
 }
 export interface IFiles {
   fieldname: string;

@@ -84,18 +84,18 @@ export class VideoServices {
     return video;
   }
 
-  async WatchVideo(id: any) {
+  async WatchVideo(videoId: any) {
     try {
-      const video = this.videoRepository.findOne(id);
+      const video = this.videoRepository.findOne(videoId);
 
       let CurViews;
       await video.then((response) => (CurViews = response?.views));
-      await this.videoRepository.update(id, {
+      await this.videoRepository.update(videoId, {
         views: Number(CurViews) + 1,
       });
 
       const watch = this.videoRepository.findOne({
-        where: { id: id.id },
+        where: { id: videoId.id },
         relations: ["channel", "likesvideos", "comments"],
       });
 
@@ -104,22 +104,39 @@ export class VideoServices {
       throw new ResponseError("Video not found", 404);
     }
   }
-  async UpdateVideo(body: IVideos, id: any) {
-    try {
-      await this.videoRepository.update(id, {
-        name: body.name,
-        description: body.description,
-        duration: body.duration,
-      });
+  async UpdateVideo(body: IVideos, videoId: string, userId: any) {
+    const video = await this.videoRepository.findOne({
+      where: { id: videoId },
+      relations: ["channel"],
+    });
+    const channel = await this.channelRepository.findOne({
+      where: { id: video?.channel.id },
+      relations: ["user"],
+    });
 
-      const updated = this.videoRepository.findOne(id);
-      return updated;
-    } catch (e) {
+    if (video === undefined) {
       throw new ResponseError("Video not found", 404);
     }
+
+    if (channel.user.id !== userId.id) {
+      throw new ResponseError(
+        "Forbiden only channel owner can update video",
+        401
+      );
+    }
+
+    await this.videoRepository.update(videoId, {
+      name: body.name,
+      description: body.description,
+      duration: body.duration,
+      updatedOn: new Date(),
+    });
+
+    const updated = this.videoRepository.findOne(videoId);
+    return updated;
   }
-  async DeleteVideo(id: any) {
-    const video = await this.videoRepository.findOne(id);
+  async DeleteVideo(videoId: any) {
+    const video = await this.videoRepository.findOne(videoId);
 
     if (video === undefined) {
       throw new ResponseError("Video not found", 404);
@@ -127,7 +144,7 @@ export class VideoServices {
 
     deleteData(video?.tumbkey);
     deleteData(video?.videokey);
-    await this.videoRepository.delete(id);
+    await this.videoRepository.delete(videoId);
 
     return { message: "Video deleted" };
   }
