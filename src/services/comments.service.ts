@@ -19,12 +19,11 @@ export class CommentsService {
   }
 
   async delete(id: string) {
-    try {
-      await this.commentsRepository.delete({ id });
-      return true;
-    } catch (e) {
+      const deleted = await this.commentsRepository.delete({ id });
+      if(deleted.affected){
+        return true;
+      }
       return false;
-    }
   }
 
   async ListComments() {
