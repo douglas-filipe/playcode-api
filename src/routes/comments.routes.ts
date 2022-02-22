@@ -1,6 +1,6 @@
 import { Express, Router } from "express";
 import { CommentsController } from "../controllers";
-import { createCommentsModel } from "../models";
+import { createCommentsModel, updateCommetsModel } from "../models";
 import { validation, verifyToken } from "../middlewares";
 import { LikeCommentsControllers } from "../controllers/likescomments.controller";
 const router = Router();
@@ -14,7 +14,12 @@ const commentsRouter = (app: Express) => {
   );
   router.delete("/:id", CommentsController.delete);
   router.get("/", CommentsController.ListComments);
-  router.put("/:id", CommentsController.UpdateCommentary);
+  router.patch(
+    "/:id",
+    verifyToken,
+    validation(updateCommetsModel),
+    CommentsController.UpdateCommentary
+  );
   router.post("/like/:id", verifyToken, LikeCommentsControllers.LikeCommentary);
   app.use("/comments", router);
 };
