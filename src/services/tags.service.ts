@@ -23,5 +23,10 @@ export class TagsService {
     }
     return false
    }
+
+  async list(){
+      const tags = await this.tagsRepository.find()
+      return tags
+    }
   
 }
