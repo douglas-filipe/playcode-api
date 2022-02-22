@@ -167,6 +167,7 @@ export class VideoServices {
     const videos = await this.videoRepository
       .createQueryBuilder("videos")
       .leftJoinAndSelect("videos.likesvideos", "likesvideos")
+      .leftJoinAndSelect("videos.channel", "channel")
       .orderBy("videos.createdOn", "DESC")
       .getMany();
     return videos;
@@ -175,6 +176,7 @@ export class VideoServices {
     const videos = await this.videoRepository
       .createQueryBuilder("videos")
       .leftJoinAndSelect("videos.likesvideos", "likesvideos")
+      .leftJoinAndSelect("videos.channel", "channel")
       .orderBy("videos.views", "DESC")
       .orderBy("videos.likes", "DESC")
       .getMany();
@@ -185,6 +187,7 @@ export class VideoServices {
     const videos = await this.videoRepository
       .createQueryBuilder("videos")
       .leftJoinAndSelect("videos.likesvideos", "likesvideos")
+      .leftJoinAndSelect("videos.channel", "channel")
       .limit(6)
       .orderBy("videos.views", "DESC")
       .orderBy("videos.likes", "DESC")
@@ -196,6 +199,7 @@ export class VideoServices {
     const videos = await this.videoRepository
       .createQueryBuilder("videos")
       .leftJoinAndSelect("videos.likesvideos", "likesvideos")
+      .leftJoinAndSelect("videos.channel", "channel")
       .limit(6)
       .orderBy("videos.createdOn", "DESC")
       .getMany();
