@@ -10,6 +10,7 @@ import {
 } from "typeorm";
 import { v4 as uuidv4 } from "uuid";
 import { User, Video } from ".";
+import Subscribers from "./subscribers.entity";
 
 @Entity()
 export default class Channel {
@@ -32,9 +33,8 @@ export default class Channel {
   @OneToMany((type) => Video, (video) => video.channel)
   videos!: Video[];
 
-  @ManyToMany((type) => User, (subs) => subs.subs)
-  @JoinTable()
-  subs!: User[];
+  @OneToMany((type) => Subscribers, (subs) => subs.channel)
+  subs!: Subscribers[];
 
   constructor() {
     if (!this.id) {
