@@ -6,7 +6,7 @@ import {
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { v4 as uuidv4 } from "uuid";
-import Comments from "./Comments";
+import Comments from "./comments.entity";
 import User from "./user.entity";
 
 @Entity("commentslikes")
