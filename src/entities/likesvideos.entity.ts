@@ -7,7 +7,7 @@ import {
 } from "typeorm";
 import { v4 as uuidv4 } from "uuid";
 import User from "./user.entity";
-import Video from "./Videos";
+import Video from "./videos.entity";
 
 @Entity("likesvideos")
 export default class LikesVideos {

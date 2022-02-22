@@ -7,25 +7,7 @@ export class VideoControllers {
     try {
       const video = new VideoServices();
 
-      const userFiles: any = req.files;
-
-      let imgFile = userFiles.filter((e: any) => e.fieldname === "img")[0];
-      let vidFile = userFiles.filter((e: any) => e.fieldname === "video")[0];
-
-      if (imgFile === undefined) {
-        throw new ResponseError(
-          "Field 'img' is required, allowed extensions (png, jpg, jpeg)",
-          403
-        );
-      }
-      if (vidFile === undefined) {
-        throw new ResponseError(
-          "Field 'video' is required, allowed extensions (mp4, avi, wmv)",
-          403
-        );
-      }
-
-      const user = await video.AddVideo(req.body, imgFile, vidFile);
+      const user = await video.AddVideo(req.body, req.files, req.user);
 
       return res.status(201).json(user);
     } catch (error: any) {
@@ -46,7 +28,11 @@ export class VideoControllers {
     try {
       const video = new VideoServices();
 
-      const updateData = await video.UpdateVideo(req.body, req.params);
+      const updateData = await video.UpdateVideo(
+        req.body,
+        req.params.id,
+        req.user
+      );
 
       return res.status(200).json(updateData);
     } catch (error: any) {
@@ -57,9 +43,9 @@ export class VideoControllers {
     try {
       const video = new VideoServices();
 
-      await video.DeleteVideo(req.params);
+      const deleted = await video.DeleteVideo(req.params.id, req.user);
 
-      return res.status(204);
+      return res.status(200).json(deleted);
     } catch (error: any) {
       return res.status(error.statusCode).json({ error: error.message });
     }
