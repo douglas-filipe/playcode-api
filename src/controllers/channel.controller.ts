@@ -39,18 +39,16 @@ export default class ChannelController {
       const { id } = req.params;
 
       const channelService = new ChannelService();
-      const channel = await channelService.byId(id);
-
-      // if (!channel) {
-      //   throw new ResponseError("Channel not found.", 400);
-      // }
+      const channel = await channelService.byId(id, {
+        relations: ["user", "videos", "subs"],
+      });
 
       return res.json(channel);
     } catch (e: any) {
-      // if (e.message === "Channel not found.") {
-      //   return res.status(e.statusCode).json({ message: e.message });
-      // }
-      //const message = e.message;
+      if (!e.statusCode) {
+        return res.status(400).json({ message: e.message });
+      }
+
       return res.status(e.statusCode).json({ message: e.message });
     }
   }
