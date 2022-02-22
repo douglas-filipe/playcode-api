@@ -1,6 +1,6 @@
 import User from "./user.entity";
 import Channel from "./channel.entity";
-import Video from "./Videos";
+import Video from "./videos.entity";
 import Comments from "./comments.entity";
 import LikesVideos from "./likesvideos.entity";
 import Messages from "./message.entity";

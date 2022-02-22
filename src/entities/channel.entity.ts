@@ -9,7 +9,8 @@ import {
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { v4 as uuidv4 } from "uuid";
-import { User, Video } from ".";
+import User from "./user.entity";
+import Video from "./videos.entity";
 
 @Entity()
 export default class Channel {
