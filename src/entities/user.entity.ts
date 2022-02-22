@@ -13,6 +13,7 @@ import Comments from "./comments.entity";
 import bcryptjs from "bcryptjs";
 import { v4 as uuid } from "uuid";
 import Channel from "./channel.entity";
+import Subscribers from "./subscribers.entity";
 
 @Entity("users")
 export default class User {
@@ -37,9 +38,8 @@ export default class User {
   @OneToMany((type) => Comments, (comments) => comments.user)
   comments!: Comments[];
 
-  @ManyToMany((type) => Channel, (channels) => channels.subs)
-  @JoinTable()
-  subs!: Channel[];
+  @ManyToMany((type) => Subscribers, (subs) => subs.user)
+  subs!: Subscribers[];
 
   @BeforeUpdate()
   updateDate() {

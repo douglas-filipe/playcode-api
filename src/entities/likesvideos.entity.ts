@@ -6,7 +6,8 @@ import {
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { v4 as uuidv4 } from "uuid";
-import { User, Video } from ".";
+import User from "./user.entity";
+import Video from "./Videos";
 
 @Entity("likesvideos")
 export default class LikesVideos {

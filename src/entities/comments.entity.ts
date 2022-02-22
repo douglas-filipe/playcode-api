@@ -8,7 +8,7 @@ import {
 } from "typeorm";
 import User from "./user.entity";
 import Video from "./Videos";
-import { LikesComments } from "./";
+import LikesComments from "./likescomments.entity";
 import { v4 as uuidv4 } from "uuid";
 
 @Entity("comments")
