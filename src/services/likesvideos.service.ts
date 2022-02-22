@@ -31,12 +31,11 @@ export class LikesVideosService {
           user_id,
           video_id,
         });
-        video.likes += 1;
-        await this.videoRepository.save(video);
         await this.likesvideosRepository.save(newLike);
         return `Add reaction to in video_id: ${newLike.video_id}, from user_id ${newLike.user_id}`;
       }
-      throw new Error(`Have you already liked this`);
+      await this.likesvideosRepository.delete(like);
+      return `Remove reaction to in video_id: ${like.video_id}, from user_id ${like.user_id}`;
     } catch (e) {
       throw new Error((e as Error).message);
     }

@@ -20,7 +20,7 @@ const videosRoute = (app: Express) => {
   );
   router.put("/:id", validation(VideoModel), videoControllers.UpdateById);
   router.delete("/:id", videoControllers.DeleteById);
-  router.post("/like/:id", verifyToken, LikesVideosControllers.LikeVideo);
+  router.post("/:id/like", verifyToken, LikesVideosControllers.LikeVideo);
   router.get("/populate", videoControllers.ListAllVideosPopulate);
   router.get("/recents", videoControllers.ListAllVideosRecents);
   router.get("/limit/recents", videoControllers.ListLimitVideosRecents);
