@@ -10,11 +10,7 @@ import {
 } from "typeorm";
 import { v4 as uuidv4 } from "uuid";
 import User from "./user.entity";
-<<<<<<< HEAD
 import Video from "./videos.entity";
-=======
-import Video from "./Videos";
->>>>>>> origin
 
 @Entity()
 export default class Channel {

@@ -7,12 +7,8 @@ import {
   OneToMany,
 } from "typeorm";
 import User from "./user.entity";
-<<<<<<< HEAD
 import Video from "./videos.entity";
 
-=======
-import Video from "./Videos";
->>>>>>> origin
 import { v4 as uuidv4 } from "uuid";
 import LikesComments from "./likescomments.entity";
 

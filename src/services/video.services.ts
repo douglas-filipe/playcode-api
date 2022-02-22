@@ -1,7 +1,7 @@
 import { getCustomRepository } from "typeorm";
 import { ResponseError } from "../errors";
 import { ChannelRepository, VideoRepositories } from "../repositories";
-import { IFiles, IVideos } from "../types/IVideo";
+import { IVideos } from "../types/IVideo";
 import {
   deleteData,
   uploadImage,
@@ -118,7 +118,7 @@ export class VideoServices {
       throw new ResponseError("Video not found", 404);
     }
 
-    if (channel.user.id !== userId.id) {
+    if (channel?.user.id !== userId.id) {
       throw new ResponseError(
         "Forbiden only channel owner can update video",
         401
@@ -149,7 +149,7 @@ export class VideoServices {
       throw new ResponseError("Video not found", 404);
     }
 
-    if (channel.user.id !== userId.id) {
+    if (channel?.user.id !== userId.id) {
       throw new ResponseError(
         "Forbiden only channel owner can delete video",
         401
