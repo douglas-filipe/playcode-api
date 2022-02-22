@@ -1,4 +1,12 @@
 import { createUserModel, loginUserModel } from "./userModel.validation";
-import { createCommentsModel } from './commentsModel.validation'
+import {
+  createCommentsModel,
+  updateCommetsModel,
+} from "./commentsModel.validation";
 
-export { createUserModel, loginUserModel, createCommentsModel };
+export {
+  createUserModel,
+  loginUserModel,
+  createCommentsModel,
+  updateCommetsModel,
+};

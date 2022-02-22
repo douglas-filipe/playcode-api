@@ -1,4 +1,5 @@
 import { json, Request, Response } from "express";
+import { ResponseError } from "../errors";
 import { CommentsService } from "../services";
 
 export class CommentsController {
@@ -34,13 +35,23 @@ export class CommentsController {
     try {
       const commentService = new CommentsService();
       const { id } = req.params;
+
       const updatedComment = await commentService.UpdateCommentary(
         id,
         req.body
       );
+
+      if (!updatedComment) {
+        throw new ResponseError("Comment not found", 404);
+      }
+
       return res.status(200).json(updatedComment);
-    } catch (e) {
-      return res.status(404).json({ message: "Comment not found" });
+    } catch (e: any) {
+      if (e.statusCode) {
+        return res.status(e.statusCode).json({ message: e.message });
+      }
+
+      return res.status(400).json({ message: e.message });
     }
   }
 }
