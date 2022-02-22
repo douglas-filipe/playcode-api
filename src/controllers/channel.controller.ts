@@ -5,7 +5,6 @@ import { ResponseError } from "../errors";
 export default class ChannelController {
   static async create(req: Request, res: Response) {
     try {
-      const { idUser } = req;
       const channelName = req.body.name;
       const files: any = req.files;
 
@@ -18,13 +17,8 @@ export default class ChannelController {
         );
       }
 
-      const userService = new UsersServices();
-      const user = await userService.usersRepository.findOne({
-        id: idUser as string,
-      }); // procurar usuario pelo id recebido pelo token
-
       const channelService = new ChannelService();
-      const newChannel = await channelService.add(channelName, file, user);
+      const newChannel = await channelService.add(channelName, file, req.user);
 
       newChannel.user.password = "*".repeat(8);
 

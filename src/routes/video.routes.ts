@@ -14,6 +14,7 @@ const router = Router();
 const videosRoute = (app: Express) => {
   router.post(
     "",
+    verifyToken,
     multer(multerConfig).any(),
     validation(VideoModel),
     videoControllers.CreateVideo

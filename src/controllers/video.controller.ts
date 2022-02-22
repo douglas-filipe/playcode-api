@@ -7,29 +7,11 @@ export class VideoControllers {
     try {
       const video = new VideoServices();
 
-      const userFiles: any = req.files;
-
-      let imgFile = userFiles.filter((e: any) => e.fieldname === "img")[0];
-      let vidFile = userFiles.filter((e: any) => e.fieldname === "video")[0];
-
-      if (imgFile === undefined) {
-        throw new ResponseError(
-          "Field 'img' is required, allowed extensions (png, jpg, jpeg)",
-          403
-        );
-      }
-      if (vidFile === undefined) {
-        throw new ResponseError(
-          "Field 'video' is required, allowed extensions (mp4, avi, wmv)",
-          403
-        );
-      }
-
-      const user = await video.AddVideo(req.body, imgFile, vidFile);
+      const user = await video.AddVideo(req.body, req.files, req.user);
 
       return res.status(201).json(user);
     } catch (error: any) {
-      return res.status(error.statusCode).json({ error: error.message });
+      return res.status(400).json({ error: error.message });
     }
   }
   async FindOneById(req: Request, res: Response): Promise<Response> {
