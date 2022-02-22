@@ -6,7 +6,7 @@ import { ILoginUser } from "../types/IUser";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import bcryptjs from "bcryptjs";
-import { User } from "../entities";
+import User from "../entities/user.entity";
 
 export class UsersServices {
   usersRepository: UsersRepositories;

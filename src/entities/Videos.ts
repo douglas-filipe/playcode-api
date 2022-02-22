@@ -9,8 +9,8 @@ import {
 } from "typeorm";
 import { v4 as uuid } from "uuid";
 import Channel from "./channel.entity";
-import { LikesVideos } from ".";
 import Comments from "./comments.entity";
+import LikesVideos from "./likesvideos.entity";
 
 @Entity("video")
 export default class Video {
