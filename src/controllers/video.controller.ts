@@ -21,7 +21,7 @@ export class VideoControllers {
       const watchOne = await video.WatchVideo(req.params);
       return res.status(200).json(watchOne);
     } catch (error: any) {
-      return res.status(400).json({ error: error.message });
+      return res.status(error.statusCode).json({ error: error.message });
     }
   }
   async UpdateById(req: Request, res: Response): Promise<Response> {
@@ -36,16 +36,16 @@ export class VideoControllers {
 
       return res.status(200).json(updateData);
     } catch (error: any) {
-      return res.status(400).json({ error: error.message });
+      return res.status(error.statusCode).json({ error: error.message });
     }
   }
   async DeleteById(req: Request, res: Response): Promise<Response> {
     try {
       const video = new VideoServices();
 
-      await video.DeleteVideo(req.params);
+      const deleted = await video.DeleteVideo(req.params.id, req.user);
 
-      return res.status(204);
+      return res.status(200).json(deleted);
     } catch (error: any) {
       return res.status(error.statusCode).json({ error: error.message });
     }

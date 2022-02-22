@@ -44,13 +44,10 @@ export const uploadVideo = async (buffer: any, fileData: any) => {
   return awsUpload;
 };
 export const deleteData = async (key: any) => {
-  console.log(key);
-
-  await s3
-    .deleteObject({
-      Bucket: process.env.S3_BUCKET,
-      Key: key,
-    })
+  s3.deleteObject({
+    Bucket: process.env.S3_BUCKET,
+    Key: key,
+  })
     .promise()
     .then(() => {})
     .catch((err: any) => {
