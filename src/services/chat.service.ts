@@ -29,14 +29,14 @@ export class ChatServices {
     return room;
   }
 
+  async SearchRoom(room_id: string) {
+    const room = await this.roomRepository.findOne({ id: room_id });
+    return room;
+  }
+
   async CreateMessage(body: ICreateMessageRequestBody) {
     const message = this.messageRepository.create({ ...body });
     await this.messageRepository.save(message);
-    const { room_id } = message;
-    /* const listMessages = await this.messageRepository.find({
-      where: { room_id: body.room_id },
-    }); */
-    io.to(room_id).emit("message", message);
     return message;
   }
 

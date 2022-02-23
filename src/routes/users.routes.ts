@@ -22,6 +22,8 @@ const usersRoute = (app: Express) => {
     DuplicateEmail,
     UsersControllers.UpdateUser
   );
+  router.post("/users/recover_password", UsersControllers.sendTokenToEmail);
+  router.patch("/users/change_password", UsersControllers.resetPassword);
   app.use("/", router);
 };
 

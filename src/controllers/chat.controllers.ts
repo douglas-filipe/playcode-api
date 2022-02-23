@@ -18,6 +18,7 @@ export class ChatControllers {
       const message = await chatService.CreateMessage(req.body);
       return res.status(201).json(message);
     } catch (e) {
+      console.log(e);
       return res.status(400).json({ message: "Error" });
     }
   }
@@ -29,5 +30,14 @@ export class ChatControllers {
     const chatService = new ChatServices();
     const messages = await chatService.ListMessagesRoom(req.params.room_id);
     return res.json(messages);
+  }
+  static async SearchRoom(req: Request, res: Response): Promise<Response> {
+    try {
+      const chatService = new ChatServices();
+      const room = await chatService.SearchRoom(req.params.room_id);
+      return res.status(200).json(room);
+    } catch (e) {
+      return res.status(404).json({ message: "Room not found" });
+    }
   }
 }
