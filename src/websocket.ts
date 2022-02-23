@@ -1,7 +1,6 @@
 import { io } from "./app";
 import { RoomRepository } from "./repositories/rooms.repository";
 import { MessageRepository } from "./repositories/messageRepository";
-import { UsersRepositories } from "./repositories";
 import { getCustomRepository } from "typeorm";
 import { Express } from "express";
 
@@ -10,7 +9,6 @@ export class Chat {
     io.on("connection", (socket) => {
       const room = getCustomRepository(RoomRepository);
       const message = getCustomRepository(MessageRepository);
-      const user = getCustomRepository(UsersRepositories);
       //Listar as salas
       room.find().then((result) => {
         socket.emit("output-rooms", result);
@@ -64,10 +62,6 @@ export class Chat {
         message.find({ where: { room_id } }).then((result) => {
           socket.emit("output-messages", result);
         });
-      });
-
-      socket.on("disconnect", () => {
-        console.log(`user disconnected: `, socket.id);
       });
     });
   }

@@ -29,6 +29,11 @@ export class ChatServices {
     return room;
   }
 
+  async SearchRoom(room_id: string) {
+    const room = await this.roomRepository.findOne({ id: room_id });
+    return room;
+  }
+
   async CreateMessage(body: ICreateMessageRequestBody) {
     const message = this.messageRepository.create({ ...body });
     await this.messageRepository.save(message);
