@@ -2,7 +2,6 @@ import { getCustomRepository } from "typeorm";
 import { SubscribersRepository } from "../repositories/subscribers.repository";
 import { UsersRepositories } from "../repositories/users.repository";
 import { ChannelRepository } from "../repositories/channel.repository";
-import { User } from "../entities";
 
 export class SubscribersService {
   subscribersRepository: SubscribersRepository;

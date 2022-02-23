@@ -28,7 +28,6 @@ export class Chat {
 
       socket.on("join", ({ name, room_id, user_id }) => {
         socket.join(room_id);
-        console.log("join user", name);
       });
 
       /* socket.on("sendMessage", (text, room_id, user_id, name) => {
@@ -51,6 +50,11 @@ export class Chat {
       }); */
 
       socket.on("sendMessage", (message, room_id) => {
+        io.to(room_id).emit("message", message);
+        //callback();
+      });
+
+      socket.on("messagesList", (message, room_id) => {
         io.to(room_id).emit("message", message);
         //callback();
       });

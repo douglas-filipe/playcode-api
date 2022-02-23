@@ -9,6 +9,9 @@ export default class Room {
   @Column()
   name!: string;
 
+  @Column()
+  img!: string;
+
   constructor() {
     if (!this.id) {
       this.id = uuidv4();
