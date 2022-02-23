@@ -14,12 +14,18 @@ const router = Router();
 const videosRoute = (app: Express) => {
   router.post(
     "",
+    verifyToken,
     multer(multerConfig).any(),
     validation(VideoModel),
     videoControllers.CreateVideo
   );
-  router.put("/:id", validation(VideoModel), videoControllers.UpdateById);
-  router.delete("/:id", videoControllers.DeleteById);
+  router.patch(
+    "/:id",
+    verifyToken,
+    validation(VideoModel),
+    videoControllers.UpdateById
+  );
+  router.delete("/:id", verifyToken, videoControllers.DeleteById);
   router.post("/:id/like", verifyToken, LikesVideosControllers.LikeVideo);
   router.get("/populate", videoControllers.ListAllVideosPopulate);
   router.get("/recents", videoControllers.ListAllVideosRecents);

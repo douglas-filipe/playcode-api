@@ -29,6 +29,9 @@ export class UsersControllers {
     const { idUser } = req;
     const usersServices = new UsersServices();
     const user = await usersServices.ById(idUser as string);
+    if(!user){
+      res.status(400).json({message: "user not exists"})
+    }
     return res.json(user);
   }
 

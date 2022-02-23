@@ -7,8 +7,8 @@ import {
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { v4 as uuidv4 } from "uuid";
-import User from "./user.entity";
 import Room from "./room.entity";
+import User from "./user.entity";
 
 @Entity("messages")
 export default class Messages {

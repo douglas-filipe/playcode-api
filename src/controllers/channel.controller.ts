@@ -25,9 +25,9 @@ export default class ChannelController {
       }); // procurar usuario pelo id recebido pelo token
 
       const channelService = new ChannelService();
-      const newChannel = await channelService.add(channelName, file, user);
+      const newChannel = await channelService.add(channelName, file, req.user);
 
-      newChannel.user.password = "*".repeat(8);
+      // newChannel.user.password = "*".repeat(8);
 
       return res.status(201).json(newChannel);
     } catch (e: any) {

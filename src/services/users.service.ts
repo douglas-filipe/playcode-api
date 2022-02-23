@@ -6,6 +6,7 @@ import { ILoginUser } from "../types/IUser";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import bcryptjs from "bcryptjs";
+import User from "../entities/user.entity";
 
 export class UsersServices {
   usersRepository: UsersRepositories;
@@ -71,21 +72,30 @@ export class UsersServices {
 
   async UpdateUser(id: string, body: IRequestBody) {
     try {
-      const { password, email, name } = body;
       const user = await this.usersRepository.findOne({ id });
       if (!user) throw new Error("User Not Found");
-      const hashedPassword = bcryptjs.hashSync(password, 10);
-      user.password = password ? hashedPassword : user.password;
-      user.email = email ? email : user.email;
-      user.name = name ? name : user.name;
-      await this.usersRepository.save(user);
-      return {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        createdOn: user.createdOn,
-        updatedOn: user.updatedOn,
-      };
+      if (body.password) {
+        const hashedPassword = bcryptjs.hashSync(body.password, 10);
+        body.password = hashedPassword;
+      }
+      await this.usersRepository
+        .createQueryBuilder()
+        .update(User)
+        .set(body)
+        .where("users.id = :id", { id })
+        .execute();
+      const newUser = await this.usersRepository
+        .createQueryBuilder("users")
+        .select([
+          "users.id",
+          "users.name",
+          "users.email",
+          "users.createdOn",
+          "users.updatedOn",
+        ])
+        .where("users.id = :id", { id })
+        .getOne();
+      return newUser;
     } catch (e) {
       throw new Error((e as Error).message);
     }

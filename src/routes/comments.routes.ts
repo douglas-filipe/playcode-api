@@ -12,15 +12,11 @@ const commentsRouter = (app: Express) => {
     validation(createCommentsModel),
     CommentsController.create
   );
-  router.delete("/:id", CommentsController.delete);
+  router.delete("/:id", verifyToken, CommentsController.delete);
   router.get("/", CommentsController.ListComments);
-  router.patch(
-    "/:id",
-    verifyToken,
-    validation(updateCommetsModel),
-    CommentsController.UpdateCommentary
-  );
+  router.put("/:id", verifyToken, CommentsController.UpdateCommentary);
   router.post("/like/:id", verifyToken, LikeCommentsControllers.LikeCommentary);
+
   app.use("/comments", router);
 };
 

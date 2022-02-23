@@ -1,4 +1,5 @@
-import { IVideos } from ".";
+import { IVideos } from "./IVideo";
+import { ISub } from "./ISub";
 import { IUSerWithoutPassword } from "./IUser";
 
 export interface IChannelWithoutUserPassword {
@@ -8,5 +9,5 @@ export interface IChannelWithoutUserPassword {
   avatarKey: string;
   user: IUSerWithoutPassword;
   videos?: IVideos[];
-  subs?: IUSerWithoutPassword[];
+  subs?: ISub[];
 }

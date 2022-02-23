@@ -1,9 +1,9 @@
 import { FindManyOptions, FindOneOptions, getCustomRepository } from "typeorm";
-import { Channel, User } from "../entities";
+import Channel from "../entities/channel.entity";
 import { ResponseError } from "../errors";
 import { ChannelRepository } from "../repositories";
 import { IChannelWithoutUserPassword } from "../types/IChannel";
-import { deleteData, uploadData } from "../utils/VideoDataManager";
+import { deleteData, uploadImage } from "../utils/VideoDataManager";
 
 export class ChannelService {
   channelRepository: ChannelRepository;
@@ -12,7 +12,7 @@ export class ChannelService {
     this.channelRepository = getCustomRepository(ChannelRepository);
   }
 
-  async add(channelName: string, file: any, user?: User) {
+  async add(channelName: string, file: any, user?: any) {
     if (
       (file.mimetype === "image/png" ||
         file.mimetype === "image/jpg" ||
@@ -22,12 +22,13 @@ export class ChannelService {
       throw new ResponseError("Image file cannot exceed 2MB", 400);
     }
 
-    const avatar = await uploadData(file.buffer, file);
+    const avatar = await uploadImage(file.buffer, file);
 
     const channel = {
       name: channelName,
       avatarUrl: avatar.Location,
       avatarKey: avatar.Key,
+      user,
     };
 
     const createdChannel = this.channelRepository.create(channel);
@@ -62,7 +63,7 @@ export class ChannelService {
 
     if (file && channel) {
       await deleteData(channel.avatarKey);
-      const avatar = await uploadData(file.buffer, file);
+      const avatar = await uploadImage(file.buffer, file);
       channel.avatarKey = avatar.Key;
       channel.avatarUrl = avatar.Location;
     }

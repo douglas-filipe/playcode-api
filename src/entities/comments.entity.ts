@@ -6,10 +6,10 @@ import {
   JoinColumn,
   OneToMany,
 } from "typeorm";
-import User from "./user.entity";
-import Video from "./Videos";
-import LikesComments from "./likescomments.entity";
 import { v4 as uuidv4 } from "uuid";
+import User from "./user.entity";
+import Video from "./videos.entity";
+import LikesComments from "./likescomments.entity";
 
 @Entity("comments")
 class Comments {
