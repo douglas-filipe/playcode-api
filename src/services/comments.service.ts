@@ -1,4 +1,5 @@
-import { getCustomRepository } from "typeorm";
+import { FindOneOptions, getCustomRepository } from "typeorm";
+import Comments from "../entities/comments.entity";
 import { CommentsRepository } from "../repositories";
 import { IComments } from "../types";
 
@@ -18,12 +19,18 @@ export class CommentsService {
     };
   }
 
+  async byId(id: string, options?: FindOneOptions<Comments>) {
+    const comment = await this.commentsRepository.findOne({ id }, options);
+
+    return comment;
+  }
+
   async delete(id: string) {
-      const deleted = await this.commentsRepository.delete({ id });
-      if(deleted.affected){
-        return true;
-      }
-      return false;
+    const deleted = await this.commentsRepository.delete({ id });
+    if (deleted.affected) {
+      return true;
+    }
+    return false;
   }
 
   async ListComments() {

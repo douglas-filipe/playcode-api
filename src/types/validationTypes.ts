@@ -1,3 +1,5 @@
+import Video from "../entities/videos.entity";
+
 export interface ICreateUsers {
   name: string;
   email: string;
@@ -20,4 +22,8 @@ export interface IerrorsYup {
 export interface IcreateComments {
   description: string;
   video: string;
+}
+
+export interface IVideoWithUser extends Video {
+  userId?: string;
 }

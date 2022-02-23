@@ -1,8 +1,14 @@
 import { Router, Express } from "express";
 import multer from "multer";
 import { ChannelController } from "../controllers";
-import { chanelNotExist, verifyError, verifyToken } from "../middlewares";
+import {
+  chanelNotExist,
+  verifyError,
+  verifyOwner,
+  verifyToken,
+} from "../middlewares";
 import { SubscribersControllers } from "../controllers/subscribers.controller";
+
 const multerConfig = require("../configs/multer");
 
 const router = Router();
@@ -19,6 +25,7 @@ const channelRouter = (app: Express) => {
   router.patch(
     "/:id",
     verifyToken,
+    verifyOwner("channel"),
     multer(multerConfig).any(),
     chanelNotExist,
     verifyError,
@@ -27,6 +34,7 @@ const channelRouter = (app: Express) => {
   router.delete(
     "/:id",
     verifyToken,
+    verifyOwner("channel"),
     chanelNotExist,
     verifyError,
     ChannelController.delete

@@ -86,13 +86,6 @@ export default class ChannelController {
 
       let file = files.find((file: any) => file.fieldname === "img");
 
-      if (!file) {
-        throw new ResponseError(
-          "Field 'img' is required, allowed extensions (png, jpg, jpeg)",
-          403
-        );
-      }
-
       const channelService = new ChannelService();
       const channel = await channelService.update(id, channelName, file);
 
