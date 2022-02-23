@@ -7,7 +7,7 @@ export class CommentsController {
     const commentService = new CommentsService();
     const comment = await commentService.create({
       ...req.body,
-      user: { id: req.idUser },
+      user: { id: req.user?.id },
     });
     return res.status(201).json(comment);
   }

@@ -47,6 +47,9 @@ export class VideoControllers {
 
       return res.status(200).json(deleted);
     } catch (error: any) {
+      if (!error.statusCode) {
+        return res.status(400).json({ message: error.message });
+      }
       return res.status(error.statusCode).json({ error: error.message });
     }
   }
