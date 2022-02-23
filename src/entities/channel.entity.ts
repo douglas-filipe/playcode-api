@@ -3,12 +3,11 @@ import {
   Entity,
   JoinColumn,
   OneToMany,
-  JoinTable,
-  ManyToMany,
   OneToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { v4 as uuidv4 } from "uuid";
+import Subscribers from "./subscribers.entity";
 import User from "./user.entity";
 import Video from "./videos.entity";
 
@@ -33,9 +32,8 @@ export default class Channel {
   @OneToMany((type) => Video, (video) => video.channel)
   videos!: Video[];
 
-  @ManyToMany((type) => User, (subs) => subs.subs)
-  @JoinTable()
-  subs!: User[];
+  @OneToMany((type) => Subscribers, (subs) => subs.channel)
+  subs!: Subscribers[];
 
   constructor() {
     if (!this.id) {
