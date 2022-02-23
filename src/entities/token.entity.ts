@@ -16,11 +16,15 @@ export default class Token {
   @PrimaryGeneratedColumn("uuid")
   id!: string;
 
+  @Column()
   token!: string;
 
-  @OneToOne((type) => User, (user) => user.id)
-  @JoinTable()
-  user_id!: User[];
+  @Column()
+  user_id!: string;
+
+  @OneToOne(() => User)
+  @JoinColumn({ name: "user_id" })
+  user!: User;
 
   constructor() {
     if (!this.id) {

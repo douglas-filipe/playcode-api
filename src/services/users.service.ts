@@ -7,12 +7,21 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import bcryptjs from "bcryptjs";
 import User from "../entities/user.entity";
+import { TokenRepositories } from "../repositories/token.repository";
+import { sendEmailToUser } from "../utils/sendEmailToUser";
+
+interface Idecoded {
+  id: string;
+  user_id: string;
+}
 
 export class UsersServices {
   usersRepository: UsersRepositories;
+  tokenRepository: TokenRepositories;
 
   constructor() {
     this.usersRepository = getCustomRepository(UsersRepositories);
+    this.tokenRepository = getCustomRepository(TokenRepositories);
   }
   async CreateUser(body: IRequestBody) {
     const user = this.usersRepository.create({
@@ -99,5 +108,45 @@ export class UsersServices {
     } catch (e) {
       throw new Error((e as Error).message);
     }
+  }
+
+  async sendTokenToEmail(email: string) {
+    const user = await this.usersRepository.findOne({ email: email });
+    if (!user) throw new Error("User not found");
+    const token = await this.tokenRepository.findOne({
+      where: { user_id: user.id },
+    });
+    if (token) await this.tokenRepository.delete(token.id);
+    const resetToken = jwt.sign({ id: user.id }, process.env.SECRET as string);
+    const hashToken = bcryptjs.hashSync(resetToken, 10);
+    const newToken = this.tokenRepository.create({
+      token: hashToken,
+      user_id: user.id,
+    });
+    await this.tokenRepository.save(newToken);
+    const subject = "Alteração de senha";
+    const text = `Seu token para recuperação de senha: ${resetToken}`;
+    sendEmailToUser(email, text, subject);
+    return "Email sent";
+  }
+
+  async resetPassword(token: string, password: string) {
+    const decoded = jwt.verify(token, process.env.SECRET as string) as Idecoded;
+    const user = await this.usersRepository.findOne({ id: decoded.id });
+    if (!user) throw new Error("User not found");
+    const passwordResetToken = await this.tokenRepository.findOne({
+      user_id: user.id,
+    });
+    if (!passwordResetToken) {
+      throw new Error("Invalid or expired password reset token");
+    }
+    const isValid = bcryptjs.compareSync(token, passwordResetToken.token);
+    if (!isValid) {
+      throw new Error("Invalid or expired password reset token");
+    }
+    const hashedPassword = bcryptjs.hashSync(password, 10);
+    user.password = hashedPassword;
+    await this.usersRepository.save(user);
+    return "Your password is change";
   }
 }
