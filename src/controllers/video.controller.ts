@@ -24,6 +24,20 @@ export class VideoControllers {
       return res.status(error.statusCode).json({ error: error.message });
     }
   }
+  async increaseById(req: Request, res: Response) {
+    try {
+      const video = new VideoServices();
+
+      const view = await video.incrementViews(req.params.id);
+
+      return res.json({ message: view });
+    } catch (e: any) {
+      if (e.statusCode) {
+        return res.status(e.statusCode).json({ message: e.message });
+      }
+      return res.status(400).json(e.message);
+    }
+  }
   async UpdateById(req: Request, res: Response): Promise<Response> {
     try {
       const video = new VideoServices();
