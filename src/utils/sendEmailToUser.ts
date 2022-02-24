@@ -1,4 +1,10 @@
 import nodemailer from "nodemailer";
+import {
+  MAIL_HOST,
+  MAIL_PASS,
+  MAIL_PORT,
+  MAIL_USER,
+} from "../configs/env.config";
 
 export const sendEmailToUser = (
   emailUser: string,
@@ -6,18 +12,18 @@ export const sendEmailToUser = (
   subject: string
 ) => {
   const remetente = nodemailer.createTransport({
-    host: "smtp.gmail.com",
+    host: MAIL_HOST,
     service: "gmail",
-    port: 587,
+    port: MAIL_PORT,
     secure: true,
     auth: {
-      user: process.env.email_send,
-      pass: process.env.password_user,
+      user: MAIL_USER,
+      pass: MAIL_PASS,
     },
   });
 
   const emailTo = {
-    from: process.env.email_send,
+    from: MAIL_USER,
     to: emailUser,
     subject: subject,
     text: text,
