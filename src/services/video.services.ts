@@ -105,14 +105,6 @@ export class VideoServices {
 
   async WatchVideo(videoId: any) {
     try {
-      const video = this.videoRepository.findOne(videoId);
-
-      let CurViews;
-      await video.then((response) => (CurViews = response?.views));
-      await this.videoRepository.update(videoId, {
-        views: Number(CurViews) + 1,
-      });
-
       const watch = this.videoRepository.findOne({
         where: { id: videoId.id },
         relations: ["channel", "likesvideos", "comments"],
@@ -122,6 +114,19 @@ export class VideoServices {
     } catch (e) {
       throw new ResponseError("Video not found", 404);
     }
+  }
+  async incrementViews(videoId: string) {
+    const video = await this.videoRepository.findOne(videoId);
+
+    if (!video) {
+      throw new ResponseError("Video not found", 404);
+    }
+
+    video.views += 1;
+
+    await this.videoRepository.update(videoId, video);
+
+    return "increased views";
   }
   async UpdateVideo(body: IVideos, videoId: string, userId: any) {
     const video = await this.videoRepository.findOne({
