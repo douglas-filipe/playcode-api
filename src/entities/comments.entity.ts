@@ -26,7 +26,7 @@ class Comments {
   @JoinColumn({ name: "user_id" })
   user!: User;
 
-  @ManyToOne((type) => Video, (video) => video.comments, { eager: true })
+  @ManyToOne((type) => Video, (video) => video.comments)
   @JoinColumn({ name: "video_id" })
   video!: Video;
 
