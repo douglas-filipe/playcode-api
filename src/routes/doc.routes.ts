@@ -5,7 +5,7 @@ const router = Router();
 
 const docRouter = (app: Express) => {
   router.get("", (req: Request, res: Response) => {
-    const doc = path.resolve("src/documentation/index.html");
+    const doc = path.resolve("src/views/documentation/index.html");
     console.log("*".repeat(5), doc);
     return res.sendFile(doc);
   });

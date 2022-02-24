@@ -41,6 +41,7 @@ app.use(
   })
 );
 app.use(logger);
+app.use(express.static("src/views/documentation/"));
 
 // app.use("/", swaggerUiExpress.serve, swaggerUiExpress.setup(swaggerDocument));
 
