@@ -6,6 +6,8 @@ const router = Router();
 
 const watchRoute = (app: Express) => {
   router.get("/:id", videoControllers.FindOneById);
+  router.get("/:id/view", videoControllers.increaseById);
+
   app.use("/watch", router);
 };
 
