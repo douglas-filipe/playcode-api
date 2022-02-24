@@ -1,6 +1,6 @@
 {
   "name": "play-code-back-end",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "main": "src/server.ts",
   "repository": "git@gitlab.com:estevan2/play-code-back-end.git",
   "author": "Estevan T. D. Martins <estevandias7@gmail.com>",
