@@ -29,8 +29,8 @@ export class UsersControllers {
     const { idUser } = req;
     const usersServices = new UsersServices();
     const user = await usersServices.ById(idUser as string);
-    if(!user){
-      res.status(400).json({message: "user not exists"})
+    if (!user) {
+      res.status(400).json({ message: "user not exists" });
     }
     return res.json(user);
   }
@@ -57,4 +57,24 @@ export class UsersControllers {
 
     return res.status(404).json({ message: "user not exists" });
   }
+  static sendTokenToEmail = async (req: Request, res: Response) => {
+    try {
+      const userService = new UsersServices();
+      const email = await userService.sendTokenToEmail(req.body.email);
+      return res.status(200).json({ message: email });
+    } catch (e) {
+      return res.status(400).json({ message: (e as Error).message });
+    }
+  };
+
+  static resetPassword = async (req: Request, res: Response) => {
+    try {
+      const userService = new UsersServices();
+      const { token, password } = req.body;
+      const email = await userService.resetPassword(token, password);
+      return res.status(200).json({ message: email });
+    } catch (e) {
+      return res.status(400).json({ message: (e as Error).message });
+    }
+  };
 }

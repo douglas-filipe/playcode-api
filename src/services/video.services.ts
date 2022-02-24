@@ -1,7 +1,9 @@
-import { getCustomRepository } from "typeorm";
+import { FindOneOptions, getCustomRepository } from "typeorm";
+import Video from "../entities/videos.entity";
 import { ResponseError } from "../errors";
 import { ChannelRepository, VideoRepositories } from "../repositories";
 import { IVideos } from "../types/IVideo";
+import { IVideoWithUser } from "../types/validationTypes";
 import {
   deleteData,
   uploadImage,
@@ -84,6 +86,23 @@ export class VideoServices {
     return video;
   }
 
+  async withUserIdById(id: string, options?: FindOneOptions<Video>) {
+    let video: IVideoWithUser | undefined = await this.videoRepository.findOne(
+      { id },
+      options
+    );
+
+    if (video?.channel) {
+      const channel = await this.channelRepository.findOne(
+        { id: video.channel.id },
+        { relations: ["user"] }
+      );
+      video.userId = channel?.user.id;
+    }
+
+    return video;
+  }
+
   async WatchVideo(videoId: any) {
     try {
       const video = this.videoRepository.findOne(videoId);
@@ -140,14 +159,15 @@ export class VideoServices {
       where: { id: videoId },
       relations: ["channel"],
     });
-    const channel = await this.channelRepository.findOne({
-      where: { id: video?.channel.id },
-      relations: ["user"],
-    });
 
     if (video === undefined) {
       throw new ResponseError("Video not found", 404);
     }
+
+    const channel = await this.channelRepository.findOne({
+      where: { id: video?.channel.id },
+      relations: ["user"],
+    });
 
     if (channel?.user.id !== userId.id) {
       throw new ResponseError(
@@ -167,6 +187,7 @@ export class VideoServices {
     const videos = await this.videoRepository
       .createQueryBuilder("videos")
       .leftJoinAndSelect("videos.likesvideos", "likesvideos")
+      .leftJoinAndSelect("videos.channel", "channel")
       .orderBy("videos.createdOn", "DESC")
       .getMany();
     return videos;
@@ -175,6 +196,7 @@ export class VideoServices {
     const videos = await this.videoRepository
       .createQueryBuilder("videos")
       .leftJoinAndSelect("videos.likesvideos", "likesvideos")
+      .leftJoinAndSelect("videos.channel", "channel")
       .orderBy("videos.views", "DESC")
       .orderBy("videos.likes", "DESC")
       .getMany();
@@ -185,6 +207,7 @@ export class VideoServices {
     const videos = await this.videoRepository
       .createQueryBuilder("videos")
       .leftJoinAndSelect("videos.likesvideos", "likesvideos")
+      .leftJoinAndSelect("videos.channel", "channel")
       .limit(6)
       .orderBy("videos.views", "DESC")
       .orderBy("videos.likes", "DESC")
@@ -196,6 +219,7 @@ export class VideoServices {
     const videos = await this.videoRepository
       .createQueryBuilder("videos")
       .leftJoinAndSelect("videos.likesvideos", "likesvideos")
+      .leftJoinAndSelect("videos.channel", "channel")
       .limit(6)
       .orderBy("videos.createdOn", "DESC")
       .getMany();

@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { ChannelService, UsersServices } from "../services";
 import { ResponseError } from "../errors";
+import { IUSerWithoutPassword } from "../types/IUser";
 
 export default class ChannelController {
   static async create(req: Request, res: Response) {
@@ -34,23 +35,45 @@ export default class ChannelController {
     }
   }
 
+  static async all(req: Request, res: Response) {
+    try {
+      const channelService = new ChannelService();
+      const channels = await channelService.all({ relations: ["user"] });
+
+      const secureChannels = channels.map((channel) => {
+        let newChannel = channel;
+        const { password, ...secureUser } = channel.user;
+        newChannel.user = secureUser;
+        return newChannel;
+      });
+
+      return res.json(secureChannels);
+    } catch (e: any) {}
+  }
+
   static async byId(req: Request, res: Response) {
     try {
       const { id } = req.params;
 
       const channelService = new ChannelService();
-      const channel = await channelService.byId(id);
+      const channel = await channelService.byId(id, {
+        relations: ["user", "videos", "subs"],
+      });
 
-      // if (!channel) {
-      //   throw new ResponseError("Channel not found.", 400);
-      // }
+      if (!channel) {
+        throw new ResponseError("user not found", 404);
+      }
 
-      return res.json(channel);
+      const { password, ...userWithoutPassword } = channel.user;
+      let secureChannel = channel;
+      secureChannel.user = userWithoutPassword;
+
+      return res.json(secureChannel);
     } catch (e: any) {
-      // if (e.message === "Channel not found.") {
-      //   return res.status(e.statusCode).json({ message: e.message });
-      // }
-      //const message = e.message;
+      if (!e.statusCode) {
+        return res.status(400).json({ message: e.message });
+      }
+
       return res.status(e.statusCode).json({ message: e.message });
     }
   }
@@ -62,13 +85,6 @@ export default class ChannelController {
       const files: any = req.files;
 
       let file = files.find((file: any) => file.fieldname === "img");
-
-      if (!file) {
-        throw new ResponseError(
-          "Field 'img' is required, allowed extensions (png, jpg, jpeg)",
-          403
-        );
-      }
 
       const channelService = new ChannelService();
       const channel = await channelService.update(id, channelName, file);

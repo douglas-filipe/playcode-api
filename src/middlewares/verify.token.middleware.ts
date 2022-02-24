@@ -20,10 +20,12 @@ export const verifyToken = async (
       //throw new ResponseError('invalid token', 401)
       return res.status(401).json({ message: "invalid token" });
     }
+    console.log(decoded);
 
     const userId = decoded.uuid;
 
     req.user = { id: userId };
+    req.idUser = userId;
 
     next();
   });

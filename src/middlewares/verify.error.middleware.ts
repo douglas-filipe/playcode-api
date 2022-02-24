@@ -7,7 +7,10 @@ export const verifyError = (
   next: NextFunction
 ) => {
   if (error) {
-    return res.status(error.statusCode).json({ message: error.message });
+    if (error.statusCode) {
+      return res.status(error.statusCode).json({ message: error.message });
+    }
+    return res.status(400).json({ message: error.message });
   }
   return next();
 };
