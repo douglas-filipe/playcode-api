@@ -1,6 +1,13 @@
 import express from "express";
 import { logger } from "./middlewares";
-import { channelRouter, watchRoute, commentsRoute, chatRouter, tagsRoute } from "./routes";
+import {
+  channelRouter,
+  watchRoute,
+  commentsRoute,
+  chatRouter,
+  tagsRoute,
+  docRouter,
+} from "./routes";
 import usersRoute from "./routes/users.routes";
 
 import videoRoute from "./routes/video.routes";
@@ -24,10 +31,6 @@ const io = new Server(server, {
   },
 });
 
-app.get("/", (req, res) => {
-  res.send("Running");
-});
-
 //middlewares
 app.use(express.json());
 app.use(
@@ -38,6 +41,7 @@ app.use(
   })
 );
 app.use(logger);
+app.use(express.static("src/views/documentation/"));
 
 // app.use("/", swaggerUiExpress.serve, swaggerUiExpress.setup(swaggerDocument));
 
@@ -49,7 +53,9 @@ videoRoute(app);
 watchRoute(app);
 commentsRoute(app);
 chatRouter(app);
-tagsRoute(app)
+tagsRoute(app);
+docRouter(app);
+
 //SocketIO sendo chamado
 Chat.webSocket(app);
 

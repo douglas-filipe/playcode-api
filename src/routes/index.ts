@@ -5,6 +5,7 @@ import watchRoute from "./watch.routes";
 import commentsRoute from "./comments.routes";
 import chatRouter from "./chat.routes";
 import tagsRoute from "./tags.routes";
+import docRouter from "./doc.routes";
 
 export {
   UsersRoute,
@@ -13,5 +14,6 @@ export {
   watchRoute,
   commentsRoute,
   chatRouter,
-  tagsRoute
+  tagsRoute,
+  docRouter,
 };
