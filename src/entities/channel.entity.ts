@@ -25,6 +25,9 @@ export default class Channel {
   @Column()
   avatarKey!: string;
 
+  @Column({ default: 0 })
+  subsNumber!: number;
+
   @OneToOne((type) => User)
   @JoinColumn()
   user!: User;

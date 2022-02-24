@@ -34,6 +34,8 @@ export class SubscribersService {
           channelId,
         });
         await this.subscribersRepository.save(newSub);
+        channel.subsNumber += 1;
+        await this.channelRepository.update(channel.id, channel);
         return `You have successfull subscribed on ${newSub.channelId}`;
       }
       throw new Error(
@@ -56,7 +58,7 @@ export class SubscribersService {
 
   async delete(id: string, userId: string) {
     try {
-      const subscribers = this.subscribersRepository.findOne({
+      const subscribers = await this.subscribersRepository.findOne({
         where: {
           id,
           userId,
@@ -66,6 +68,17 @@ export class SubscribersService {
       if (!subscribers) {
         throw new Error("You not subscribe on this channel!");
       }
+
+      const channel = await this.channelRepository.findOne({
+        id: subscribers.channelId,
+      });
+
+      if (!channel) {
+        throw new Error("subscribed channel does not exist");
+      }
+
+      channel.subsNumber -= 1;
+      await this.channelRepository.update(channel.id, channel);
 
       await this.subscribersRepository.delete({ id });
 
