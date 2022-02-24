@@ -58,29 +58,24 @@ export class SubscribersService {
 
   async delete(id: string, userId: string) {
     try {
-      const subscribers = await this.subscribersRepository.findOne({
-        where: {
-          id,
-          userId,
-        },
-      });
-
-      if (!subscribers) {
-        throw new Error("You not subscribe on this channel!");
-      }
-
-      const channel = await this.channelRepository.findOne({
-        id: subscribers.channelId,
-      });
+      const channel = await this.channelRepository.findOne({ id });
 
       if (!channel) {
         throw new Error("subscribed channel does not exist");
       }
 
+      const subscriber = await this.subscribersRepository.findOne({
+        where: { userId: userId, channelId: id },
+      });
+
+      if (!subscriber) {
+        throw new Error("You not subscribe on this channel!");
+      }
+
       channel.subsNumber -= 1;
       await this.channelRepository.update(channel.id, channel);
 
-      await this.subscribersRepository.delete({ id });
+      await this.subscribersRepository.delete({ id: subscriber.id });
 
       return "Succesfull unsubscribed.";
     } catch (e) {
