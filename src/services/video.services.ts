@@ -1,7 +1,11 @@
 import { FindOneOptions, getCustomRepository } from "typeorm";
 import Video from "../entities/videos.entity";
 import { ResponseError } from "../errors";
-import { ChannelRepository, VideoRepositories } from "../repositories";
+import {
+  ChannelRepository,
+  CommentsRepository,
+  VideoRepositories,
+} from "../repositories";
 import { IVideos } from "../types/IVideo";
 import { IVideoWithUser } from "../types/validationTypes";
 import {
@@ -13,10 +17,12 @@ import {
 export class VideoServices {
   videoRepository: VideoRepositories;
   channelRepository: ChannelRepository;
+  commentRepository: CommentsRepository;
 
   constructor() {
     this.videoRepository = getCustomRepository(VideoRepositories);
     this.channelRepository = getCustomRepository(ChannelRepository);
+    this.commentRepository = getCustomRepository(CommentsRepository);
   }
   async AddVideo(
     body: IVideos,
@@ -105,10 +111,31 @@ export class VideoServices {
 
   async WatchVideo(videoId: any) {
     try {
-      const watch = this.videoRepository.findOne({
+      const watch: any = await this.videoRepository.findOne({
         where: { id: videoId.id },
-        relations: ["channel", "likesvideos", "comments"],
+        relations: ["channel", "likesvideos"],
       });
+
+      if (!watch) {
+        throw new ResponseError("video not found", 404);
+      }
+
+      const comments = await this.commentRepository.find({
+        relations: ["video", "user"],
+      });
+
+      const commentsFiltered = comments
+        .filter((comment) => comment.video.id === watch.id)
+        .map((item) => {
+          return {
+            id: item.id,
+            description: item.description,
+            likes: item.likes,
+            user: { id: item.user.id, name: item.user.name },
+          };
+        });
+
+      watch.comments = commentsFiltered;
 
       return watch;
     } catch (e) {
