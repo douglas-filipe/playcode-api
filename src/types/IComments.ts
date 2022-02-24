@@ -6,5 +6,5 @@ export interface IComments {
   user: {
     id: string;
   };
-  video: IVideos;
+  videoId: string;
 }

@@ -4,12 +4,25 @@ import { CommentsService } from "../services";
 
 export class CommentsController {
   static async create(req: Request, res: Response) {
-    const commentService = new CommentsService();
-    const comment = await commentService.create({
-      ...req.body,
-      user: { id: req.user?.id },
-    });
-    return res.status(201).json(comment);
+    try {
+      const commentService = new CommentsService();
+      const { videoId, description } = req.body;
+      const id = req.user?.id;
+
+      const comment = await commentService.create(
+        description,
+        id as string,
+        videoId
+      );
+
+      return res.status(201).json(comment);
+    } catch (e: any) {
+      if (e.statusCode) {
+        return res.status(e.statusCode).json({ message: e.message });
+      }
+
+      return res.status(400).json({ messgae: e.message });
+    }
   }
 
   static async delete(req: Request, res: Response) {
