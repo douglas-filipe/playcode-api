@@ -22,11 +22,13 @@ class Comments {
   @Column({ type: "integer", nullable: true, default: 0 })
   likes!: number;
 
-  @ManyToOne((type) => User, (user) => user.comments)
+  @ManyToOne((type) => User, (user) => user.comments, { onDelete: "CASCADE" })
   @JoinColumn({ name: "user_id" })
   user!: User;
 
-  @ManyToOne((type) => Video, (video) => video.comments)
+  @ManyToOne((type) => Video, (video) => video.comments, {
+    onDelete: "CASCADE",
+  })
   @JoinColumn({ name: "video_id" })
   video!: Video;
 

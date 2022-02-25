@@ -20,11 +20,11 @@ export default class LikesVideos {
   @Column()
   video_id!: string;
 
-  @ManyToOne((type) => User, (user) => user.id)
+  @ManyToOne((type) => User, (user) => user.id, { onDelete: "CASCADE" })
   @JoinColumn({ name: "user_id" })
   user!: User;
 
-  @ManyToOne((type) => Video, (video) => video.id)
+  @ManyToOne((type) => Video, (video) => video.id, { onDelete: "CASCADE" })
   @JoinColumn({ name: "video_id" })
   video!: Video;
 

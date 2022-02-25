@@ -104,9 +104,10 @@ export default class ChannelController {
   static async delete(req: Request, res: Response) {
     try {
       const { id } = req.params;
+      const { idUser } = req;
 
       const channelService = new ChannelService();
-      const response = await channelService.delete(id);
+      const response = await channelService.delete(id, idUser as string);
 
       return res.json({ message: response });
     } catch (e: any) {

@@ -20,11 +20,13 @@ export default class CommentsLikes {
   @Column()
   commentid!: string;
 
-  @ManyToOne((type) => User, (user) => user.id)
+  @ManyToOne((type) => User, (user) => user.id, { onDelete: "CASCADE" })
   @JoinColumn({ name: "user_id" })
   user!: User;
 
-  @ManyToOne((type) => Comments, (comments) => comments.id)
+  @ManyToOne((type) => Comments, (comments) => comments.id, {
+    onDelete: "CASCADE",
+  })
   @JoinColumn({ name: "comment_id" })
   comments!: Comments;
 

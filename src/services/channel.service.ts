@@ -1,4 +1,5 @@
 import { FindManyOptions, FindOneOptions, getCustomRepository } from "typeorm";
+import { VideoServices } from "./video.services";
 import Channel from "../entities/channel.entity";
 import { ResponseError } from "../errors";
 import { ChannelRepository } from "../repositories";
@@ -74,13 +75,33 @@ export class ChannelService {
     return updated;
   }
 
-  async delete(id: string) {
-    const channel = await this.channelRepository.findOne({ id });
+  async delete(id: string, userId: string) {
+    const channel = await this.channelRepository.findOne(
+      { id },
+      { relations: ["videos"] }
+    );
+
+    if (!channel) {
+      throw new ResponseError("Channel not found", 404);
+    }
+
+    const videos = new VideoServices();
+    channel.videos.map(async (video) => {
+      const messege = await videos.DeleteVideo(video.id, { id: userId });
+      return messege;
+    });
 
     await deleteData(channel?.avatarKey);
 
     await this.channelRepository.delete({ id });
 
     return "channel has been deleted";
+  }
+
+  async findChannelByUserId(uuid: string) {
+    const channelRepository = getCustomRepository(ChannelRepository);
+    const channels = await channelRepository.find({ relations: ["user"] });
+    const channel = channels.find((item) => item.user.id === uuid);
+    return channel;
   }
 }
