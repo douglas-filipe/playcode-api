@@ -31,7 +31,7 @@ export class LikesCommentsService {
       });
 
       if (!like) {
-        const newLike = await this.likesCommentsRepository.create({
+        const newLike = this.likesCommentsRepository.create({
           user_id,
           comment_id,
         });
@@ -40,7 +40,12 @@ export class LikesCommentsService {
         await this.likesCommentsRepository.save(newLike);
         return `Add reaction to in video_id: ${newLike?.comment_id}, from user_id ${newLike.user_id}`;
       }
-      throw new Error(`Have you already liked this`);
+      commentary.likes -= 1;
+      await this.commentsRepository.save(commentary);
+      await this.likesCommentsRepository.delete(like.id);
+      return `Remove reaction`;
+
+      //throw new Error(`Have you already liked this`);
     } catch (e) {
       throw new Error((e as Error).message);
     }
