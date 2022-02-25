@@ -9,6 +9,7 @@ import bcryptjs from "bcryptjs";
 import User from "../entities/user.entity";
 import { TokenRepositories } from "../repositories/token.repository";
 import { sendEmailToUser } from "../utils/sendEmailToUser";
+import { ChannelService } from "./channel.service";
 
 interface Idecoded {
   id: string;
@@ -75,6 +76,14 @@ export class UsersServices {
     if (!user) {
       return false;
     }
+    const channelService = new ChannelService();
+    const channel = await channelService.findChannelByUserId(uuid);
+
+    if (channel) {
+      const channelService = new ChannelService();
+      await channelService.delete(channel.id, uuid);
+    }
+
     await userRepository.delete({ id: uuid });
     return "user has been deleted";
   }

@@ -55,7 +55,9 @@ export default class Video {
     this.updatedOn = new Date();
   }
 
-  @ManyToOne((type) => Channel, (channel) => channel.videos)
+  @ManyToOne((type) => Channel, (channel) => channel.videos, {
+    onDelete: "CASCADE",
+  })
   channel!: Channel;
 
   @OneToMany((type) => Comments, (comments) => comments.video)
