@@ -1,6 +1,6 @@
 import { getCustomRepository } from "typeorm";
 import { ResponseError } from "../errors";
-import { UsersRepositories } from "../repositories";
+import { ChannelRepository, UsersRepositories } from "../repositories";
 import { IRequestBody } from "../types";
 import { ILoginUser } from "../types/IUser";
 import bcrypt from "bcryptjs";
@@ -46,7 +46,6 @@ export class UsersServices {
       const token = jwt.sign({ uuid: user.id }, process.env.SECRET as string, {
         expiresIn: "1d",
       });
-
       const { password, ...others } = user;
 
       return { token, ...others };
@@ -55,6 +54,8 @@ export class UsersServices {
 
   async ById(uuid: string) {
     const userRepository = getCustomRepository(UsersRepositories);
+    const channelRepository = getCustomRepository(ChannelRepository);
+
     const user = await userRepository
       .createQueryBuilder("users")
       .select([
@@ -66,6 +67,15 @@ export class UsersServices {
       ])
       .where("users.id = :id", { id: uuid })
       .getOne();
+
+    const channel = await channelRepository.findOne({
+      relations: ["videos", "subs"],
+      where: { user: user?.id },
+    });
+
+    if (channel !== undefined) {
+      return { user, channel };
+    }
 
     return user;
   }
